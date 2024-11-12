@@ -22,7 +22,7 @@ group	= 'org.hivevm'
 
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_11
+  sourceCompatibility = JavaVersion.VERSION_1_8
   targetCompatibility = JavaVersion.VERSION_11
 }
 
@@ -34,6 +34,11 @@ allprojects {
 
 dependencies {
   implementation gradleApi()
+
+  // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
+  implementation 'org.apache.xmlgraphics:fop:2.10'
+  // https://mvnrepository.com/artifact/org.commonmark/commonmark
+  implementation 'org.commonmark:commonmark:0.24.0'
 
   // Use JUnit test framework
   // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
@@ -68,7 +73,7 @@ gradlePlugin {
       displayName = 'HiveVM Doc'
       description = 'HiveVM PDF document generator'
       implementationClass = 'org.hivevm.doc.GradlePlugin'
-      description = "Gradle plugin to use the HiveVM document generator!"
+      description = "Gradle plugin to convert markdown documents into a PDF!"
       tags.set(["hivevm", "common mark", "document generator"])
     }
   }
