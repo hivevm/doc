@@ -1,0 +1,75 @@
+plugins {
+  id 'com.gradle.plugin-publish' version '1.3.0'
+  id 'java-gradle-plugin'
+  id 'maven-publish'
+}
+
+
+// Apply the java-library plugin to add support for Java Library
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'java-gradle-plugin'
+
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+
+version = '1.0.0'
+group	= 'org.hivevm'
+
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
+
+
+allprojects {
+    tasks.withType(Javadoc).all { enabled = false }
+}
+
+
+dependencies {
+  implementation gradleApi()
+
+  // Use JUnit test framework
+  // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.3'
+}
+
+
+sourceSets {
+  main {
+    java {
+      srcDirs += 'src/main/gradle'
+      srcDirs += 'src/main/generated'
+    }
+    resources {
+    }
+  }
+/*  test {
+    java {
+      compileClasspath += configurations.compileOnly
+      runtimeClasspath += configurations.compileOnly
+    }
+  }
+*/}
+
+// Configured to publish your plugin to the plugin portal
+gradlePlugin {
+  website = 'https://www.hivevm.org'
+  vcsUrl  = 'https://github.com/hivevm/cc.git'
+  plugins {
+    create("gradle") {
+      id = 'org.hivevm.doc'
+      displayName = 'HiveVM Doc'
+      description = 'HiveVM PDF document generator'
+      implementationClass = 'org.hivevm.doc.GradlePlugin'
+      description = "Gradle plugin to use the HiveVM document generator!"
+      tags.set(["hivevm", "common mark", "document generator"])
+    }
+  }
+}
