@@ -6,12 +6,13 @@ The *build.gradle* applies the markdown plugin with the configuration parameters
 
 ~~~
 plugins {
-  id 'org.hivevm.doc' version '0.1.0'
+  id 'org.hivevm.doc' version '1.0.0'
 }
 
-
-markdown.config = 'template.ui.xml'
-markdown.source = 'manual'
+markdown {
+  source   = 'manual'
+  template = 'template.ui.xml'
+}
 ~~~
 
 The latest version can always be loaded from [Gradle Plugin repository](https://plugins.gradle.org/plugin/it.smartio.gradle.markdown).

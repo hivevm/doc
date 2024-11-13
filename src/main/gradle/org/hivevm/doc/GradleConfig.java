@@ -5,6 +5,6 @@ package org.hivevm.doc;
 
 public class GradleConfig {
 
-  String source = "";
-  String config = "";
+  String source;
+  String template;
 }

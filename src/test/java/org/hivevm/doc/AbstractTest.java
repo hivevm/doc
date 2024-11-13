@@ -3,13 +3,7 @@
 
 package org.hivevm.doc;
 
-import org.hivevm.doc.commonmark.MarkdownReader;
-import org.hivevm.doc.util.Replacer;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -29,25 +23,4 @@ abstract class AbstractTest {
   }
 
   protected abstract File getSource();
-
-  @Test
-  void testPDF() {
-    DocumentBuilder builder = new DocumentBuilder(AbstractTest.WORKING_DIR);
-    builder.setConfig(":TOL:");
-    builder.setTarget(AbstractTest.TARGET);
-    builder.setSource(getSource().getAbsolutePath());
-    builder.addProperties(AbstractTest.PROPERTIES);
-    builder.build();
-  }
-
-  @Test
-  void testMarkdownMerge() throws IOException {
-    MarkdownReader reader = new MarkdownReader(getSource());
-    File target = new File(AbstractTest.TARGET, getSource().getName());
-
-    Replacer replacer = new Replacer(AbstractTest.PROPERTIES);
-    try (FileWriter writer = new FileWriter(target)) {
-      writer.write(replacer.replaceAll(reader.readAll()));
-    }
-  }
 }

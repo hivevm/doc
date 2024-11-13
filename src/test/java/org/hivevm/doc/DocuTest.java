@@ -3,6 +3,8 @@
 
 package org.hivevm.doc;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 
 /**
@@ -13,5 +15,15 @@ class DocuTest extends AbstractTest {
   @Override
   protected final File getSource() {
     return new File(AbstractTest.WORKING_DIR, "README.md");
+  }
+
+  @Test
+  void testPDF() {
+    DocumentBuilder builder = new DocumentBuilder(AbstractTest.WORKING_DIR);
+    builder.setConfig(":TOL:");
+    builder.setTarget(AbstractTest.TARGET);
+    builder.setSource(getSource().getAbsolutePath());
+    builder.addProperties(AbstractTest.PROPERTIES);
+    builder.build();
   }
 }

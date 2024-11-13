@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template>
 <template width="210mm" height="297mm">
+	<symbols uri=":fonts/MaterialIcons-Regular.ttf.codepoints">
+		<symbol name="web" codepoint="language" />
+		<symbol name="mobile" codepoint="smartphone" />
+		<symbol name="config" codepoint="miscellaneous_services" />	
+	</symbols>
+
+	<font name="TEXT">
+		<font-metric uri=":fonts/RobotoCondensed-Regular.ttf" />
+		<font-metric uri=":fonts/RobotoCondensed-Bold.ttf" bold="true" />
+		<font-metric uri=":fonts/RobotoCondensed-Italic.ttf" italic="true" />
+		<font-metric uri=":fonts/RobotoCondensed-BoldItalic.ttf" bold="true" italic="true" />
+	</font>
+	<font name="MONO">
+		<font-metric uri=":fonts/UbuntuMono-Regular.ttf" />
+		<font-metric uri=":fonts/UbuntuMono-Bold.ttf" bold="true" />
+		<font-metric uri=":fonts/UbuntuMono-Italic.ttf" italic="true" />
+		<font-metric uri=":fonts/UbuntuMono-BoldItalic.ttf" bold="true" italic="true" />
+	</font>
+	<font name="SYMBOLS">
+		<font-metric uri=":fonts/MaterialIcons-Regular.ttf" />
+	</font>
+
 	<page name="cover" padding="210mm,0,70mm,2.7in">
 		<region position="top" extent="297mm" background=":background.jpg">
 			<panel top="187mm" left="2.5in" right="0" bottom="70mm" background="#c10076">
@@ -13,7 +35,7 @@
 	<page name="title" padding="7.5in,1in,1in,1in" column-count="2" column-gap="12pt">
 		<region position="top" extent="297mm" background="#c10076">
 			<panel top="1in" left="1in" right="1in" bottom="1in">
-				<text color="#4da8b3" font-size="256pt" font-weight="bold">{{$CHAPTER}}</text>
+				<text color="#c10076" font-size="256pt" font-weight="bold">{{$CHAPTER}}</text>
 			</panel>
 			<panel top="140mm" left="1in" right="1in" bottom="1in">
 				<text color="#eeeeee" font-size="42pt" font-weight="bold">{{$TITLE}}</text>
@@ -47,22 +69,22 @@
 	<page name="blank" />
 
     <page-set name="book">
-	    <page-entry name="cover" position="first" orientation="any" />
-	    <page-entry name="odd" position="any" orientation="odd" />
-	    <page-entry name="even" position="any" orientation="even" />
-	    <page-entry name="blank" blank="blank" />
+	    <page-entry name="cover" position="First" orientation="Any" />
+	    <page-entry name="odd" position="Any" orientation="Odd" />
+	    <page-entry name="even" position="Any" orientation="Even" />
+	    <page-entry name="blank" blank="Blank" />
     </page-set>
 
     <page-set name="chapter">
-	    <page-entry name="title" position="first" orientation="any" />
-	    <page-entry name="odd" position="any" orientation="odd" />
-	    <page-entry name="even" position="any" orientation="even" />
-	    <page-entry name="blank" blank="blank" />
+	    <page-entry name="title" position="First" orientation="Any" />
+	    <page-entry name="odd" position="Any" orientation="Odd" />
+	    <page-entry name="even" position="Any" orientation="Even" />
+	    <page-entry name="blank" blank="Blank" />
     </page-set>
 
     <page-set name="standard">
-	    <page-entry name="odd" position="any" orientation="odd" />
-	    <page-entry name="even" position="any" orientation="even" />
-	    <page-entry name="blank" blank="blank" />
+	    <page-entry name="odd" position="Any" orientation="Odd" />
+	    <page-entry name="even" position="Any" orientation="Even" />
+	    <page-entry name="blank" blank="Blank" />
     </page-set>
 </template>
