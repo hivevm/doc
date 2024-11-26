@@ -3,11 +3,10 @@
 
 package org.hivevm.doc.fop;
 
+import org.hivevm.doc.Chapter;
+import org.hivevm.doc.NodeVisitor;
 import org.hivevm.doc.fop.config.FoContext;
 import org.hivevm.doc.fop.nodes.FoBookmark;
-import org.hivevm.doc.tree.Chapter;
-import org.hivevm.doc.tree.NodeVisitor;
-import org.hivevm.doc.util.PageUtil;
 
 /**
  * The {@link FoRendererBookmark} class.

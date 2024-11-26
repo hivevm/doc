@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template>
 <template width="210mm" height="297mm">
-	<symbols uri=":fonts/MaterialIcons-Regular.ttf.codepoints">
-		<symbol name="web" codepoint="language" />
-		<symbol name="mobile" codepoint="smartphone" />
-		<symbol name="config" codepoint="miscellaneous_services" />	
-	</symbols>
-
 	<font name="TEXT">
 		<font-metric uri=":fonts/RobotoCondensed-Regular.ttf" />
 		<font-metric uri=":fonts/RobotoCondensed-Bold.ttf" bold="true" />
@@ -19,7 +13,7 @@
 		<font-metric uri=":fonts/UbuntuMono-Italic.ttf" italic="true" />
 		<font-metric uri=":fonts/UbuntuMono-BoldItalic.ttf" bold="true" italic="true" />
 	</font>
-	<font name="SYMBOLS">
+	<font name="SYMBOLS" codepoints=":fonts/MaterialIcons-Regular.ttf.codepoints">
 		<font-metric uri=":fonts/MaterialIcons-Regular.ttf" />
 	</font>
 

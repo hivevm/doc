@@ -3,6 +3,29 @@
 
 package org.hivevm.doc.fop;
 
+import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.hivevm.doc.Book;
+import org.hivevm.doc.Chapter;
+import org.hivevm.doc.CodeNode;
+import org.hivevm.doc.Image;
+import org.hivevm.doc.Inline;
+import org.hivevm.doc.Link;
+import org.hivevm.doc.List;
+import org.hivevm.doc.Message;
+import org.hivevm.doc.Message.Style;
+import org.hivevm.doc.NodeVisitor;
+import org.hivevm.doc.Paragraph;
+import org.hivevm.doc.Renderer;
+import org.hivevm.doc.Table;
+import org.hivevm.doc.Table.AreaType;
+import org.hivevm.doc.Table.Column;
+import org.hivevm.doc.Table.Row;
+import org.hivevm.doc.Text;
 import org.hivevm.doc.fop.config.FoContext;
 import org.hivevm.doc.fop.nodes.FoBasicLink;
 import org.hivevm.doc.fop.nodes.FoBlock;
@@ -16,30 +39,6 @@ import org.hivevm.doc.fop.nodes.FoTable;
 import org.hivevm.doc.fop.nodes.FoTableArea;
 import org.hivevm.doc.fop.nodes.FoTableCell;
 import org.hivevm.doc.fop.nodes.FoTableRow;
-import org.hivevm.doc.tree.Book;
-import org.hivevm.doc.tree.Chapter;
-import org.hivevm.doc.tree.CodeNode;
-import org.hivevm.doc.tree.Image;
-import org.hivevm.doc.tree.Inline;
-import org.hivevm.doc.tree.Link;
-import org.hivevm.doc.tree.List;
-import org.hivevm.doc.tree.Message;
-import org.hivevm.doc.tree.Message.Style;
-import org.hivevm.doc.tree.NodeVisitor;
-import org.hivevm.doc.tree.Paragraph;
-import org.hivevm.doc.tree.Renderer;
-import org.hivevm.doc.tree.Table;
-import org.hivevm.doc.tree.Table.AreaType;
-import org.hivevm.doc.tree.Table.Column;
-import org.hivevm.doc.tree.Table.Row;
-import org.hivevm.doc.tree.Text;
-import org.hivevm.doc.util.PageUtil;
-
-import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * The {@link FoRenderer} class.

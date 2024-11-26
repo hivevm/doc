@@ -3,10 +3,10 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fluid.Fluid;
-import org.hivevm.doc.fop.nodes.FoBlock;
-
 import java.util.Properties;
+
+import org.hivevm.doc.fop.nodes.FoBlock;
+import org.hivevm.doc.template.Fluid;
 
 /**
  * The {@link UIRenderable} class.

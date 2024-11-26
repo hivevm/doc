@@ -3,6 +3,8 @@
 
 package org.hivevm.doc.markdown;
 
+import java.util.Stack;
+
 import org.commonmark.node.BlockQuote;
 import org.commonmark.node.BulletList;
 import org.commonmark.node.Code;
@@ -25,12 +27,11 @@ import org.commonmark.node.SoftLineBreak;
 import org.commonmark.node.StrongEmphasis;
 import org.commonmark.node.Text;
 import org.commonmark.node.ThematicBreak;
-import org.hivevm.doc.commonmark.MarkdownVisitor;
-import org.hivevm.doc.tree.builder.BookBuilder;
-import org.hivevm.doc.tree.builder.PageBuilder;
-import org.hivevm.doc.tree.codeblock.CodeFactory;
 
-import java.util.Stack;
+import org.hivevm.doc.builder.BookBuilder;
+import org.hivevm.doc.builder.PageBuilder;
+import org.hivevm.doc.codeblock.CodeFactory;
+import org.hivevm.doc.commonmark.MarkdownVisitor;
 
 /**
  * The {@link MarkdownParser} implements a reader based on MARKDOWN. The Reader supports reading of

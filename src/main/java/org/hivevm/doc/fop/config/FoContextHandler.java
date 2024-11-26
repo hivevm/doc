@@ -3,17 +3,17 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fluid.FluidBuilder;
-import org.hivevm.doc.fluid.FluidParser;
+import java.net.URI;
+import java.util.Stack;
+
 import org.hivevm.doc.fop.nodes.FoPageSequenceMaster.BlankOrNot;
 import org.hivevm.doc.fop.nodes.FoPageSequenceMaster.OddOrEven;
 import org.hivevm.doc.fop.nodes.FoPageSequenceMaster.Position;
-import org.hivevm.doc.util.DataUri;
-import org.hivevm.doc.util.StAX;
-import org.hivevm.doc.util.StAX.Attributes;
-
-import java.net.URI;
-import java.util.Stack;
+import org.hivevm.doc.template.FluidBuilder;
+import org.hivevm.doc.template.FluidParser;
+import org.hivevm.util.DataUri;
+import org.hivevm.util.StAX;
+import org.hivevm.util.StAX.Attributes;
 
 /**
  * The {@link FoContextHandler} class.
@@ -40,8 +40,6 @@ class FoContextHandler extends FluidParser implements StAX.Handler {
     switch (name) {
       case "template":
       case "formatter":
-      case "symbols":
-      case "symbol":
       case "page":
 
       case "font":

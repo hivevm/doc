@@ -3,15 +3,16 @@
 
 package org.hivevm.doc.commonmark;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 import org.commonmark.Extension;
 import org.commonmark.parser.Parser;
+
 import org.hivevm.doc.commonmark.alerts.AlertExtension;
 import org.hivevm.doc.commonmark.images.ImageExtension;
 import org.hivevm.doc.commonmark.markers.MarkerExtension;
 import org.hivevm.doc.commonmark.tables.TableExtension;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * The {@link Markdown} implements a reader based on Markdown. The Reader starts from a file an

@@ -3,6 +3,17 @@
 
 package org.hivevm.doc;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.Property;
@@ -10,18 +21,9 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
+
 import org.hivevm.doc.commonmark.MarkdownReader;
-import org.hivevm.doc.util.Replacer;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
-import javax.inject.Inject;
+import org.hivevm.util.Replacer;
 
 /**
  * The {@link MergeTask} class.
@@ -51,8 +53,8 @@ public abstract class MergeTask extends DefaultTask {
       return;
     }
 
-    Properties properties = new Properties();
-    properties.putAll(System.getProperties());
+    Map<String, String> properties = new HashMap<>();
+    System.getProperties().forEach((k, v) -> properties.put(k.toString(), v.toString()));
     Replacer replacer = new Replacer(properties);
 
     // Collect all markdown files

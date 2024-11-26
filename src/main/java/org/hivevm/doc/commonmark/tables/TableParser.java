@@ -3,6 +3,9 @@
 
 package org.hivevm.doc.commonmark.tables;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.commonmark.node.Block;
 import org.commonmark.node.Node;
 import org.commonmark.parser.InlineParser;
@@ -14,9 +17,6 @@ import org.commonmark.parser.block.BlockContinue;
 import org.commonmark.parser.block.BlockStart;
 import org.commonmark.parser.block.MatchedBlockParser;
 import org.commonmark.parser.block.ParserState;
-
-import java.util.ArrayList;
-import java.util.List;
 
 class TableParser extends AbstractBlockParser {
 

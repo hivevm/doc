@@ -3,12 +3,6 @@
 
 package org.hivevm.doc.commonmark.images;
 
-import org.commonmark.node.Image;
-import org.commonmark.node.Node;
-import org.commonmark.node.Text;
-import org.commonmark.parser.delimiter.DelimiterProcessor;
-import org.commonmark.parser.delimiter.DelimiterRun;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +11,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.commonmark.node.Image;
+import org.commonmark.node.Node;
+import org.commonmark.node.Text;
+import org.commonmark.parser.delimiter.DelimiterProcessor;
+import org.commonmark.parser.delimiter.DelimiterRun;
 
 class ImageProcessor implements DelimiterProcessor {
 

@@ -3,6 +3,8 @@
 
 package org.hivevm.doc.pdf;
 
+import java.util.List;
+
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.io.InternalResourceResolver;
@@ -15,8 +17,6 @@ import org.apache.fop.render.pdf.PDFDocumentHandler;
 import org.apache.fop.render.pdf.PDFDocumentHandlerMaker;
 import org.apache.fop.render.pdf.PDFRendererConfig.PDFRendererConfigParser;
 import org.apache.fop.render.pdf.PDFRendererConfigurator;
-
-import java.util.List;
 
 /**
  * The {@link PdfRenderer} implements an {@link PDFDocumentHandlerMaker} with custom

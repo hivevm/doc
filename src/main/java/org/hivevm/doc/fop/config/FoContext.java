@@ -3,7 +3,14 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fluid.FluidSymbols;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Stack;
+import java.util.function.BiFunction;
+
 import org.hivevm.doc.fop.Fo;
 import org.hivevm.doc.fop.nodes.FoBlock;
 import org.hivevm.doc.fop.nodes.FoBookmark;
@@ -13,16 +20,9 @@ import org.hivevm.doc.fop.nodes.FoNode;
 import org.hivevm.doc.fop.nodes.FoPageSequence;
 import org.hivevm.doc.fop.nodes.FoRoot;
 import org.hivevm.doc.fop.nodes.FoStaticContent;
-import org.hivevm.doc.util.DataUri;
-import org.hivevm.doc.util.StAX;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Stack;
-import java.util.function.BiFunction;
+import org.hivevm.doc.template.FluidSymbols;
+import org.hivevm.util.DataUri;
+import org.hivevm.util.StAX;
 
 /**
  * The {@link FoContext} class.
@@ -145,8 +145,8 @@ public class FoContext {
    */
   public static FoBuilder parse(String config, File workingDir) throws IOException {
     FoBuilder template = new FoBuilder(workingDir);
-    try (InputStream inputStream = DataUri.toInputStream(workingDir, config)) {
-      StAX.parse(inputStream, new FoContextHandler(template));
+    try (InputStream stream = DataUri.toInputStream(workingDir, config)) {
+      StAX.parse(stream, new FoContextHandler(template));
     }
     return template;
   }

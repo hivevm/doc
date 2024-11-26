@@ -3,12 +3,6 @@
 
 package org.hivevm.doc.pdf;
 
-import org.apache.fop.fonts.apps.TTFReader;
-import org.apache.fop.fonts.truetype.FontFileReader;
-import org.apache.fop.fonts.truetype.TTFFile;
-import org.apache.xmlgraphics.io.Resource;
-import org.apache.xmlgraphics.io.ResourceResolver;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,6 +18,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import org.apache.fop.fonts.apps.TTFReader;
+import org.apache.fop.fonts.truetype.FontFileReader;
+import org.apache.fop.fonts.truetype.TTFFile;
+import org.apache.xmlgraphics.io.Resource;
+import org.apache.xmlgraphics.io.ResourceResolver;
 
 /**
  * The {@link FontResolver} implements a {@link ResourceResolver} which supports dynamic generation
@@ -58,10 +58,10 @@ class FontResolver implements ResourceResolver {
    * @param url
    */
   private static InputStream createFontMetric(URL url) throws IOException {
-    try (InputStream stream = url.openStream()) {
-      try (ByteArrayOutputStream metrics = new ByteArrayOutputStream()) {
-        FontResolver.createFontMetric(stream, metrics);
-        return new Resource(new ByteArrayInputStream(metrics.toByteArray()));
+    try (InputStream iStream = url.openStream()) {
+      try (ByteArrayOutputStream oStream = new ByteArrayOutputStream()) {
+        FontResolver.createFontMetric(iStream, oStream);
+        return new Resource(new ByteArrayInputStream(oStream.toByteArray()));
       }
     }
   }

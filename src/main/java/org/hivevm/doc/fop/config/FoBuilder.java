@@ -3,14 +3,14 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fluid.FluidBuilder;
-import org.hivevm.doc.fop.Fo;
-import org.hivevm.doc.fop.nodes.FoNode;
-import org.hivevm.doc.fop.nodes.FoRoot;
-
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.hivevm.doc.fop.Fo;
+import org.hivevm.doc.fop.nodes.FoNode;
+import org.hivevm.doc.fop.nodes.FoRoot;
+import org.hivevm.doc.template.FluidBuilder;
 
 /**
  * The {@link FoBuilder} class.

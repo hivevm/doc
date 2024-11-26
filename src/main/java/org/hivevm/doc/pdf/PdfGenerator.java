@@ -4,16 +4,6 @@
 package org.hivevm.doc.pdf;
 
 
-import org.apache.fop.apps.FOUserAgent;
-import org.apache.fop.apps.Fop;
-import org.apache.fop.apps.FopFactory;
-import org.apache.fop.apps.FopFactoryBuilder;
-import org.apache.fop.fonts.EmbedFontInfo;
-import org.apache.fop.fonts.Font;
-import org.apache.fop.fonts.FontTriplet;
-import org.apache.fop.fonts.FontUris;
-import org.apache.xmlgraphics.util.MimeConstants;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,6 +17,16 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.apache.fop.apps.FOUserAgent;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.FopFactoryBuilder;
+import org.apache.fop.fonts.EmbedFontInfo;
+import org.apache.fop.fonts.Font;
+import org.apache.fop.fonts.FontTriplet;
+import org.apache.fop.fonts.FontUris;
+import org.apache.xmlgraphics.util.MimeConstants;
 
 /**
  * The {@link PdfGenerator} class.

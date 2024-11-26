@@ -22,11 +22,12 @@ public class TrueTypeFont implements FilenameFilter {
   public static void main(String[] args) throws Exception {
     FilenameFilter filter = new TrueTypeFont();
     for (File font : TrueTypeFont.FONT_PATH.listFiles(filter)) {
-      File metric = new File(TrueTypeFont.FONT_PATH, String.format("%s.xml", font.getName()));
+      String filename = String.format("%s.xml", font.getName());
+      File metric = new File(TrueTypeFont.FONT_PATH, filename);
 
-      try (InputStream fontStream = new FileInputStream(font.getAbsolutePath())) {
-        try (OutputStream metricStream = new FileOutputStream(metric.getAbsolutePath())) {
-          FontResolver.createFontMetric(fontStream, metricStream);
+      try (InputStream iStream = new FileInputStream(font.getAbsolutePath())) {
+        try (OutputStream oStream = new FileOutputStream(metric.getAbsolutePath())) {
+          FontResolver.createFontMetric(iStream, oStream);
         }
       }
     }

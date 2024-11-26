@@ -3,6 +3,13 @@
 
 package org.hivevm.doc.fop;
 
+import java.util.Properties;
+import java.util.Random;
+
+import org.hivevm.doc.Book;
+import org.hivevm.doc.Chapter;
+import org.hivevm.doc.NodeVisitor;
+import org.hivevm.doc.Renderer;
 import org.hivevm.doc.fop.config.FoContext;
 import org.hivevm.doc.fop.nodes.FoBasicLink;
 import org.hivevm.doc.fop.nodes.FoBlock;
@@ -10,14 +17,6 @@ import org.hivevm.doc.fop.nodes.FoFlow;
 import org.hivevm.doc.fop.nodes.FoLeader;
 import org.hivevm.doc.fop.nodes.FoPageNumberCitation;
 import org.hivevm.doc.fop.nodes.FoRoot;
-import org.hivevm.doc.tree.Book;
-import org.hivevm.doc.tree.Chapter;
-import org.hivevm.doc.tree.NodeVisitor;
-import org.hivevm.doc.tree.Renderer;
-import org.hivevm.doc.util.PageUtil;
-
-import java.util.Properties;
-import java.util.Random;
 
 /**
  * The {@link FoRendererToC} class.

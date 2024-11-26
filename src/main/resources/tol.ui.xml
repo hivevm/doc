@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE template>
 <template width="210mm" height="297mm">
-	<symbols uri=":fonts/MaterialIcons-Regular.ttf.codepoints">
-		<symbol name="web" codepoint="language" />
-		<symbol name="mobile" codepoint="smartphone" />
-		<symbol name="config" codepoint="miscellaneous_services" />	
-	</symbols>
-
-	<formatter pattern="TOL" value="{{TOL;bold,#000000}}" />
-	<formatter pattern="smart\.IO" value="{{smart.;bold}}{{IO;bold,#c10076}}" />
-
 	<font name="TEXT">
 		<font-metric uri=":fonts/RobotoCondensed-Regular.ttf" />
 		<font-metric uri=":fonts/RobotoCondensed-Bold.ttf" bold="true" />
@@ -22,9 +13,12 @@
 		<font-metric uri=":fonts/UbuntuMono-Italic.ttf" italic="true" />
 		<font-metric uri=":fonts/UbuntuMono-BoldItalic.ttf" bold="true" italic="true" />
 	</font>
-	<font name="SYMBOLS">
+	<font name="SYMBOLS" codepoints=":fonts/MaterialIcons-Regular.ttf.codepoints">
 		<font-metric uri=":fonts/MaterialIcons-Regular.ttf" />
 	</font>
+
+	<formatter pattern="TOL" value="{{TOL;bold,#000000}}" />
+	<formatter pattern="smart\.IO" value="{{smart.;bold}}{{IO;bold,#c10076}}" />
 
 	<page name="cover" width="210mm" height="297mm" padding="210mm,0,70mm,2.7in">
 		<region position="top" extent="243mm" background=":tol-background.jpg">

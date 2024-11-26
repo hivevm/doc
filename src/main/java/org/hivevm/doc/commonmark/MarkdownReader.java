@@ -3,8 +3,6 @@
 
 package org.hivevm.doc.commonmark;
 
-import org.hivevm.doc.util.Replacer;
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.hivevm.util.Replacer;
 
 /**
  * The {@link MarkdownReader} implements a reader based on MARKDOWN. The Reader starts from a file

@@ -3,13 +3,13 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fluid.Fluid;
-import org.hivevm.doc.fop.nodes.FoPageSequence;
-import org.hivevm.doc.fop.nodes.FoPageSequenceMaster;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import org.hivevm.doc.fop.nodes.FoPageSequence;
+import org.hivevm.doc.fop.nodes.FoPageSequenceMaster;
+import org.hivevm.doc.template.Fluid;
 
 /**
  * The {@link UIPageSequence} defines a set of {@link UIPage}'s.

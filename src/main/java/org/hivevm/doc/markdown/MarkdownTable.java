@@ -4,14 +4,15 @@
 package org.hivevm.doc.markdown;
 
 import org.commonmark.node.CustomNode;
+
+import org.hivevm.doc.builder.TableBuilder;
+import org.hivevm.doc.builder.TableBuilder.CellBuilder;
+import org.hivevm.doc.codeblock.CodeFactory;
 import org.hivevm.doc.commonmark.MarkdownVisitor;
 import org.hivevm.doc.commonmark.tables.TableBody;
 import org.hivevm.doc.commonmark.tables.TableCell;
 import org.hivevm.doc.commonmark.tables.TableHead;
 import org.hivevm.doc.commonmark.tables.TableRow;
-import org.hivevm.doc.tree.builder.TableBuilder;
-import org.hivevm.doc.tree.builder.TableBuilder.CellBuilder;
-import org.hivevm.doc.tree.codeblock.CodeFactory;
 
 /**
  * The {@link MarkdownTable} class.

@@ -7,6 +7,7 @@ import org.commonmark.node.Node;
 import org.commonmark.node.Text;
 import org.commonmark.parser.delimiter.DelimiterProcessor;
 import org.commonmark.parser.delimiter.DelimiterRun;
+
 import org.hivevm.doc.commonmark.markers.Marker.Decoration;
 
 class MarkerProcessor implements DelimiterProcessor {

@@ -4,7 +4,8 @@
 package org.hivevm.doc;
 
 import org.hivevm.doc.commonmark.MarkdownReader;
-import org.hivevm.doc.util.Replacer;
+import org.hivevm.util.Replacer;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -14,19 +15,16 @@ import java.io.IOException;
 /**
  * The {@link MarkdownTest} class.
  */
-class MarkdownTest extends AbstractTest {
-
-  @Override
-  protected final File getSource() {
-    return new File(AbstractTest.WORKING_DIR, "sample/manual/developer-manual.md");
-  }
+class MarkdownTest {
 
   @Test
   void testMarkdownMerge() throws IOException {
-    MarkdownReader reader = new MarkdownReader(getSource());
-    File target = new File(AbstractTest.TARGET, getSource().getName());
+    File source = new File(Defaults.WORKING_DIR, "sample/manual/developer-manual.md");
 
-    Replacer replacer = new Replacer(AbstractTest.PROPERTIES);
+    MarkdownReader reader = new MarkdownReader(source);
+    File target = new File(Defaults.TARGET, source.getName());
+
+    Replacer replacer = new Replacer(Defaults.ENVIRONMENT);
     try (FileWriter writer = new FileWriter(target)) {
       writer.write(replacer.replaceAll(reader.readAll()));
     }

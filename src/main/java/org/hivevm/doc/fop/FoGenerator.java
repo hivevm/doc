@@ -3,10 +3,6 @@
 
 package org.hivevm.doc.fop;
 
-import org.hivevm.doc.fop.config.FoContext;
-import org.hivevm.doc.tree.Book;
-import org.hivevm.doc.tree.Renderer;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +14,10 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+
+import org.hivevm.doc.Book;
+import org.hivevm.doc.Renderer;
+import org.hivevm.doc.fop.config.FoContext;
 
 /**
  * The {@link FoGenerator} class.

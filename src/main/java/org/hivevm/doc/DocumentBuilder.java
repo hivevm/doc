@@ -3,8 +3,23 @@
 
 package org.hivevm.doc;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.function.Consumer;
+
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+
+import org.hivevm.doc.builder.BookBuilder;
 import org.hivevm.doc.commonmark.Markdown;
 import org.hivevm.doc.commonmark.MarkdownReader;
 import org.hivevm.doc.fop.FoGenerator;
@@ -12,20 +27,7 @@ import org.hivevm.doc.fop.config.FoBuilder;
 import org.hivevm.doc.fop.config.FoContext;
 import org.hivevm.doc.markdown.MarkdownParser;
 import org.hivevm.doc.pdf.PdfGenerator;
-import org.hivevm.doc.tree.Book;
-import org.hivevm.doc.tree.builder.BookBuilder;
-import org.hivevm.doc.tree.builder.BookConfig;
-import org.hivevm.doc.util.Replacer;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.function.Consumer;
+import org.hivevm.util.Replacer;
 
 /**
  * The {@link DocumentBuilder} class.
@@ -187,8 +189,10 @@ public class DocumentBuilder {
    *
    * @param file
    * @param properties
+   * @param keywords
    */
-  protected static Book parseMarkdown(File file, Properties properties) throws IOException {
+  protected static Book parseMarkdown(File file, Map<String, String> properties, Set<String> keywords)
+      throws IOException {
     Replacer replacer = new Replacer(properties);
     MarkdownReader reader = new MarkdownReader(file);
     String text = replacer.replaceAll(reader.readAll());
@@ -196,7 +200,7 @@ public class DocumentBuilder {
     Parser parser = Markdown.newInstance();
     Node node = parser.parse(text);
 
-    BookBuilder builder = new BookBuilder();
+    BookBuilder builder = new BookBuilder(keywords);
     node.accept(new MarkdownParser(builder));
     return builder.build();
   }
@@ -225,14 +229,15 @@ public class DocumentBuilder {
 
       try {
         FoBuilder template = FoContext.parse(config, workingDir);
-        BookConfig.init(template.getKeywords());
 
         FoGenerator builder = new FoGenerator();
         builder.setName(name);
         builder.setTarget(target);
         builder.setContext(template.build());
 
-        Book book = DocumentBuilder.parseMarkdown(file, this.properties);
+        Map<String, String> map = new HashMap<>();
+        properties.keySet().forEach(k -> map.put((String) k, this.properties.getProperty((String) k)));
+        Book book = DocumentBuilder.parseMarkdown(file, map, template.getKeywords());
 
         try (OutputStream ostream = new FileOutputStream(output)) {
           try (InputStream istream = builder.generate(book)) {

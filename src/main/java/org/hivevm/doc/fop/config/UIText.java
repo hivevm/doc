@@ -3,12 +3,12 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fop.nodes.FoBasicLink;
-import org.hivevm.doc.fop.nodes.FoBlock;
-
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.hivevm.doc.fop.nodes.FoBasicLink;
+import org.hivevm.doc.fop.nodes.FoBlock;
 
 /**
  * The {@link UIText} class.

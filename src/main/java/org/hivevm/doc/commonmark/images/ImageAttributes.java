@@ -3,10 +3,10 @@
 
 package org.hivevm.doc.commonmark.images;
 
+import java.util.Map;
+
 import org.commonmark.node.CustomNode;
 import org.commonmark.node.Delimited;
-
-import java.util.Map;
 
 /**
  * A node containing text and other inline nodes as children.

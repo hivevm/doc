@@ -316,7 +316,7 @@ Our implementation allows to define placeholders for font symbols. The symbol na
 
 	@web@
 
-@web@
+@web@ @mobile@ @config@
 
 As font the [Material Icons Font][3] is used.
 

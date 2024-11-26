@@ -15,16 +15,17 @@ import org.commonmark.node.Paragraph;
 import org.commonmark.node.SoftLineBreak;
 import org.commonmark.node.Text;
 import org.commonmark.node.ThematicBreak;
+
+import org.hivevm.doc.Message.Style;
+import org.hivevm.doc.builder.ContentBuilder;
+import org.hivevm.doc.builder.ListBuilder;
+import org.hivevm.doc.builder.PageBuilder;
+import org.hivevm.doc.builder.ParagraphBuilder;
+import org.hivevm.doc.codeblock.CodeFactory;
 import org.hivevm.doc.commonmark.MarkdownVisitor;
 import org.hivevm.doc.commonmark.alerts.AlertBlock;
 import org.hivevm.doc.commonmark.images.ImageAttributes;
 import org.hivevm.doc.commonmark.tables.Table;
-import org.hivevm.doc.tree.Message.Style;
-import org.hivevm.doc.tree.builder.ContentBuilder;
-import org.hivevm.doc.tree.builder.ListBuilder;
-import org.hivevm.doc.tree.builder.PageBuilder;
-import org.hivevm.doc.tree.builder.ParagraphBuilder;
-import org.hivevm.doc.tree.codeblock.CodeFactory;
 
 /**
  * The {@link MarkdownPage} class.

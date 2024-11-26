@@ -3,9 +3,9 @@
 
 package org.hivevm.doc.fop.nodes;
 
-import org.hivevm.doc.fop.nodes.set.FoFont;
-
 import java.util.regex.Pattern;
+
+import org.hivevm.doc.fop.nodes.set.FoFont;
 
 /**
  * The {@link FoBasicLink} class.

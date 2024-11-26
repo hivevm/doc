@@ -3,14 +3,14 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fop.nodes.FoBlockContainer;
-import org.hivevm.doc.fop.nodes.FoBlockContainer.Position;
-import org.hivevm.doc.fop.nodes.FoStaticContent;
-import org.hivevm.doc.util.DataUri;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import org.hivevm.doc.fop.nodes.FoBlockContainer;
+import org.hivevm.doc.fop.nodes.FoBlockContainer.Position;
+import org.hivevm.util.DataUri;
+import org.hivevm.doc.fop.nodes.FoStaticContent;
 
 /**
  * The {@link UIPanelStatic} class.

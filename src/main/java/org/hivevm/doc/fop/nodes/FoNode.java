@@ -3,13 +3,13 @@
 
 package org.hivevm.doc.fop.nodes;
 
-import org.hivevm.doc.fop.nodes.set.Fo;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hivevm.doc.fop.nodes.set.Fo;
 
 /**
  * The {@link FoNode} is a builder implementation for Apache Formating Objects.

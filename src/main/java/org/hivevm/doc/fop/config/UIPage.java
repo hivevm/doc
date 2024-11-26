@@ -3,16 +3,16 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fluid.FluidMargin;
-import org.hivevm.doc.fluid.FluidTemplate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import org.hivevm.doc.fop.Fo;
 import org.hivevm.doc.fop.nodes.FoPageSequence;
 import org.hivevm.doc.fop.nodes.FoRegion;
 import org.hivevm.doc.fop.nodes.FoSimplePageMaster;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import org.hivevm.doc.template.FluidMargin;
+import org.hivevm.doc.template.FluidTemplate;
 
 /**
  * The {@link UIPage} defines a page of the template.

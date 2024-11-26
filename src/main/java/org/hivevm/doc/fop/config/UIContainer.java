@@ -3,7 +3,7 @@
 
 package org.hivevm.doc.fop.config;
 
-import org.hivevm.doc.fluid.Fluid;
+import org.hivevm.doc.template.Fluid;
 
 /**
  * The {@link UIContainer} defines a generic interface for all template items.

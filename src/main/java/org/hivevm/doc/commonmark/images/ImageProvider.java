@@ -3,13 +3,13 @@
 
 package org.hivevm.doc.commonmark.images;
 
+import java.util.Map;
+
 import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.CustomNode;
 import org.commonmark.node.Image;
 import org.commonmark.node.Node;
 import org.commonmark.renderer.html.AttributeProvider;
-
-import java.util.Map;
 
 class ImageProvider implements AttributeProvider {
 

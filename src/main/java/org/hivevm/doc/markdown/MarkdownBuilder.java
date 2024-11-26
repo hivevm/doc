@@ -20,14 +20,15 @@ import org.commonmark.node.SoftLineBreak;
 import org.commonmark.node.StrongEmphasis;
 import org.commonmark.node.Text;
 import org.commonmark.node.ThematicBreak;
+
+import org.hivevm.doc.builder.ContentBuilder;
+import org.hivevm.doc.builder.InlineBuilder;
+import org.hivevm.doc.builder.ListBuilder;
+import org.hivevm.doc.builder.ParagraphBuilder;
+import org.hivevm.doc.codeblock.CodeFactory;
 import org.hivevm.doc.commonmark.MarkdownVisitor;
 import org.hivevm.doc.commonmark.images.ImageAttributes;
 import org.hivevm.doc.commonmark.markers.Marker;
-import org.hivevm.doc.tree.builder.ContentBuilder;
-import org.hivevm.doc.tree.builder.InlineBuilder;
-import org.hivevm.doc.tree.builder.ListBuilder;
-import org.hivevm.doc.tree.builder.ParagraphBuilder;
-import org.hivevm.doc.tree.codeblock.CodeFactory;
 
 /**
  * The {@link MarkdownBuilder} class.

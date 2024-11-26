@@ -3,6 +3,8 @@
 
 package org.hivevm.doc.commonmark.alerts;
 
+import java.util.regex.Matcher;
+
 import org.commonmark.node.Block;
 import org.commonmark.parser.block.AbstractBlockParser;
 import org.commonmark.parser.block.AbstractBlockParserFactory;
@@ -10,8 +12,6 @@ import org.commonmark.parser.block.BlockContinue;
 import org.commonmark.parser.block.BlockStart;
 import org.commonmark.parser.block.MatchedBlockParser;
 import org.commonmark.parser.block.ParserState;
-
-import java.util.regex.Matcher;
 
 public class AlertBlockParser extends AbstractBlockParser {
 
