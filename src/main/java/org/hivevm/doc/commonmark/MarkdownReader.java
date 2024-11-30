@@ -6,7 +6,9 @@ package org.hivevm.doc.commonmark;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -18,11 +20,12 @@ import java.util.regex.Pattern;
 
 import org.hivevm.util.Replacer;
 
+
 /**
- * The {@link MarkdownReader} implements a reader based on MARKDOWN. The Reader starts from a file
- * an includes referenced files to create a single huge MARKDOWN file.
+ * The {@link MarkdownReader} implements a reader based on MARKDOWN. The Reader starts from an
+ * {@link InputStream} an includes referenced files to create a single huge MARKDOWN file.
  */
-public class MarkdownReader {
+public class MarkdownReader extends Reader {
 
   // File includes: [TITLE?](RELATIVE_PATH)
   private static final Pattern INCLUDE =
@@ -42,7 +45,8 @@ public class MarkdownReader {
   // Image definition: ![](IMAGE_PATH)
   private static final Pattern IMAGE = Pattern.compile("!\\[([^\\]]*)\\]\\(([^\\)]+)\\)", Pattern.CASE_INSENSITIVE);
 
-  private final File           file;
+
+  private final File file;
 
   /**
    * Constructs an instance of {@link MarkdownReader}.
@@ -67,7 +71,7 @@ public class MarkdownReader {
    * @param header
    * @param request
    */
-  protected final void merge(File file, String header, String title, Request request) throws IOException {
+  private void merge(File file, String header, String title, Request request) throws IOException {
     boolean isCode = false;
     String level = header;
     File path = file.getParentFile().getAbsoluteFile();
@@ -131,6 +135,35 @@ public class MarkdownReader {
 
       request.writeln(line);
     }
+  }
+
+  /*
+   * @see java.io.Reader#read(char[], int, int)
+   */
+  @Override
+  public int read(char[] arg0, int arg1, int arg2) throws IOException {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  /*
+   * @see java.io.Reader#close()
+   */
+  @Override
+  public void close() throws IOException {
+    // TODO Auto-generated method stub
+
+  }
+
+  /**
+   * Reads all data.
+   */
+  public final String readAll() throws IOException {
+    StringWriter text = new StringWriter();
+    try (Request request = new Request(new PrintWriter(text))) {
+      merge(getFile(), "", null, request);
+    }
+    return text.toString();
   }
 
   /**
@@ -198,16 +231,5 @@ public class MarkdownReader {
       }
       this.writer.close();
     }
-  }
-
-  /**
-   * Reads all data.
-   */
-  public final String readAll() throws IOException {
-    StringWriter text = new StringWriter();
-    try (Request request = new Request(new PrintWriter(text))) {
-      merge(getFile(), "", null, request);
-    }
-    return text.toString();
   }
 }

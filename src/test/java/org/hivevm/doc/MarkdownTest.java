@@ -21,12 +21,13 @@ class MarkdownTest {
   void testMarkdownMerge() throws IOException {
     File source = new File(Defaults.WORKING_DIR, "sample/manual/developer-manual.md");
 
-    MarkdownReader reader = new MarkdownReader(source);
-    File target = new File(Defaults.TARGET, source.getName());
+    try (MarkdownReader reader = new MarkdownReader(source)) {
+      File target = new File(Defaults.TARGET, source.getName());
 
-    Replacer replacer = new Replacer(Defaults.ENVIRONMENT);
-    try (FileWriter writer = new FileWriter(target)) {
-      writer.write(replacer.replaceAll(reader.readAll()));
+      Replacer replacer = new Replacer(Defaults.ENVIRONMENT);
+      try (FileWriter writer = new FileWriter(target)) {
+        writer.write(replacer.replaceAll(reader.readAll()));
+      }
     }
   }
 }
