@@ -3,6 +3,7 @@
 
 package org.hivevm.doc.commonmark;
 
+import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -58,20 +59,13 @@ public class MarkdownReader extends Reader {
   }
 
   /**
-   * Gets the file.
-   */
-  protected final File getFile() {
-    return this.file;
-  }
-
-  /**
    * Merge the files to the markdown content.
    *
    * @param file
    * @param header
    * @param request
    */
-  private void merge(File file, String header, String title, Request request) throws IOException {
+  private void merge(File file, String name, String header, String title, Request request) throws IOException {
     boolean isCode = false;
     String level = header;
     File path = file.getParentFile().getAbsoluteFile();
@@ -100,7 +94,7 @@ public class MarkdownReader extends Reader {
         if (md.exists()) {
           String hash = matcher.group(1) == null ? level : matcher.group(1).substring(1);
           String subtitle = matcher.group(2) == null ? title : matcher.group(2);
-          merge(md, "\n" + hash, subtitle, request);
+          merge(md, md.getName(), "\n" + hash, subtitle, request);
         }
         continue;
       }
@@ -120,13 +114,13 @@ public class MarkdownReader extends Reader {
       // Update footnotes
       matcher = MarkdownReader.FOOTNOTE.matcher(line);
       if (matcher.find()) {
-        request.addFootNote(file.getName(), matcher.group(1), matcher.group(2), matcher.group(3));
+        request.addFootNote(name, matcher.group(1), matcher.group(2), matcher.group(3));
         continue;
       }
 
       // Replace all link references
       line = Replacer.replaceAll(line, MarkdownReader.FOOTNOTE_REF,
-          m -> request.getFootNote(file.getName(), m.group(2), m.group(1)));
+          m -> request.getFootNote(name, m.group(2), m.group(1)));
 
       // Normalize image paths
       line = Replacer.replaceAll(line, MarkdownReader.IMAGE,
@@ -137,33 +131,60 @@ public class MarkdownReader extends Reader {
     }
   }
 
-  /*
-   * @see java.io.Reader#read(char[], int, int)
+  private int    index = 0;
+  private String text  = null;
+
+  /**
+   * Reads characters into a portion of an array.
+   * 
+   * @param buffer
+   * @param offset
+   * @param length
    */
   @Override
-  public int read(char[] arg0, int arg1, int arg2) throws IOException {
-    // TODO Auto-generated method stub
-    return 0;
+  public int read(char[] buffer, int offset, int length) throws IOException {
+    if (text == null) {
+      StringWriter writer = new StringWriter();
+      try (Request request = new Request(new PrintWriter(writer))) {
+        merge(this.file, this.file.getName(), "", null, request);
+      }
+      index = 0;
+      text = writer.toString();
+    }
+
+    if (index >= text.length())
+      return -1;
+
+    if (index + length > text.length())
+      length = text.length() - index;
+
+    text.getChars(index, index + length, buffer, offset);
+
+    index += length;
+    return length;
   }
 
-  /*
-   * @see java.io.Reader#close()
+  /**
+   * Closes this stream and releases any system resources associated with it.
    */
   @Override
   public void close() throws IOException {
     // TODO Auto-generated method stub
-
+    this.text = null;
   }
 
   /**
    * Reads all data.
    */
   public final String readAll() throws IOException {
-    StringWriter text = new StringWriter();
-    try (Request request = new Request(new PrintWriter(text))) {
-      merge(getFile(), "", null, request);
+    StringWriter writer = new StringWriter();
+    try (BufferedReader reader = new BufferedReader(this)) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        writer.write(line + "\n");
+      }
     }
-    return text.toString();
+    return writer.toString();
   }
 
   /**
