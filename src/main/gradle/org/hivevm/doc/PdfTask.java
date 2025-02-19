@@ -11,8 +11,17 @@ import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
+import org.hivevm.doc.fop.FoRequestHandler;
+import org.hivevm.doc.fop.pdf.PdfRenderer;
+import org.hivevm.doc.md.MarkdownRequestHandler;
+import org.hivevm.doc.template.Template;
+import org.hivevm.util.ReplacerRequestHandler;
+import org.hivevm.util.lambda.RequestStreamBuilder;
+import org.hivevm.util.lambda.RequestStreamHandler;
 
-import java.io.File;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -43,26 +52,43 @@ public abstract class PdfTask extends DefaultTask {
     GradleConfig config = getProject().getExtensions().findByType(GradleConfig.class);
     File source = getFile((config == null) ? null : config.source);
 
-    String template = getTemplate().getOrElse((config == null) ? ":DEFAULT:" : config.template);
-    if (!template.isEmpty() && !template.startsWith(":") && !template.startsWith("/")) {
-      template = new File(getProject().getRootDir(), template).getAbsolutePath();
+    String templatePath = getTemplate().getOrElse((config == null || config.template == null) ? ":default.ui.xml" : config.template);
+    if (templatePath.startsWith(":") && templatePath.endsWith(":")) {
+      templatePath = String.format("%s.ui.xml", templatePath.substring(0, templatePath.length() - 1).toLowerCase());
+    }
+    else if (!templatePath.isEmpty() && !templatePath.startsWith(":") && !templatePath.startsWith("/")) {
+      templatePath = new File(getProject().getRootDir(), templatePath).getAbsolutePath();
     }
 
-    DocumentBuilder builder = new DocumentBuilder(getProject().getRootDir());
-    builder.setConfig(template);
-    builder.setSource(getSource().getAsFile().getOrElse(source).getAbsolutePath());
-    builder.setTarget(getProject().getBuildDir());
+    Map<String, String> props = new HashMap<>();
+    System.getProperties().entrySet().stream()
+            .filter(e -> e.getValue() != null)
+            .forEach(e -> props.put((String) e.getKey(), (String) e.getValue()));
+//    getProject().getProperties().entrySet().stream()
+//            .filter(e -> e.getValue() != null)
+//            .forEach(e -> props.put((String) e.getKey(), (String) e.getValue()));
 
-    builder.onInfo(m -> getLogger().info(m));
-    builder.onError(t -> getLogger().error("An Error occured!", t));
-    builder.addProperties(System.getProperties());
-    getProject().getProperties().entrySet().stream().filter(e -> e.getValue() != null)
-        .forEach(e -> builder.addProperty(e.getKey(), e.getValue()));
+    try {
+      Template template = Template.parse(templatePath, source);
 
-    // Adding GIT informations to the filename
-    builder.setSuffix(PdfTask.getFileSuffix(builder.getProperties()));
+      RequestStreamBuilder builder = new RequestStreamBuilder();
+      builder.append(new MarkdownRequestHandler());
+      builder.append(new ReplacerRequestHandler(props));
+      builder.append(new FoRequestHandler(template));
+      builder.append(new PdfRenderer(template));
+      RequestStreamHandler handler = builder.build();
 
-    builder.build();
+      for(File md : source.listFiles(f -> f.getName().endsWith(".md"))) {
+        File output = new File(getProject().getBuildDir(), md.getName() + ".pdf");
+        try (FileOutputStream ostream = new FileOutputStream(output)) {
+          try (InputStream istream = new FileInputStream(md)) {
+            handler.handleRequest(istream, ostream, md.getParentFile());
+          }
+        }
+      }
+    } catch (IOException e) {
+      getLogger().error("Failed to merge the file", e);
+    }
   }
 
   protected File getFile(String pathname) {

@@ -1,33 +1,58 @@
-// Copyright 2024 HiveVM.org. All rights reserved.
+// Copyright 2025 HiveVM.org. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
 package org.hivevm.doc;
 
-import org.hivevm.doc.commonmark.MarkdownReader;
-import org.hivevm.util.Replacer;
-
+import org.hivevm.doc.api.Document;
+import org.hivevm.doc.api.DocumentParser;
+import org.hivevm.doc.template.Template;
+import org.hivevm.util.MergeReader;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
  * The {@link MarkdownTest} class.
  */
-class MarkdownTest {
+public class MarkdownTest {
 
-  @Test
-  void testMarkdownMerge() throws IOException {
-    File source = new File(Defaults.WORKING_DIR, "sample/manual/developer-manual.md");
+    @Test
+    public void testMarkdown() throws IOException {
+        Template template = Template.parse(":default.ui.xml", new File("."));
 
-    try (MarkdownReader reader = new MarkdownReader(source)) {
-      File target = new File(Defaults.TARGET, source.getName());
+        File markdown = new File("README.md");
+        try (BufferedReader reader = new BufferedReader(new FileReader(markdown))) {
+            String text = String.join("\n", reader.lines().toList());
+            Document document = DocumentParser.parse(text, template.getKeywords());
 
-      Replacer replacer = new Replacer(Defaults.ENVIRONMENT);
-      try (FileWriter writer = new FileWriter(target)) {
-        writer.write(replacer.replaceAll(reader.readAll()));
-      }
+            System.out.println(">>>>>>>>");
+        }
     }
-  }
+
+    @Test
+    public void testMarkdownMerge() throws IOException {
+        Template template = Template.parse(":default.ui.xml", new File("."));
+        File markdown = new File(Defaults.WORKING_DIR, "sample/manual/developer-manual.md");
+
+        try (MergeReader merge = MergeReader.create(markdown)) {
+            Document document = DocumentParser.parse(merge.readAll(), template.getKeywords());
+
+            System.out.println(">>>>>>>>");
+        }
+    }
+
+    @Test
+    public void testAsciiDocMerge() throws Exception {
+        Template template = Template.parse(":default.ui.xml", new File("."));
+        File adoc = new File("adoc/HandbuchDerEntwicklungsabteilung.adoc");
+
+        try (MergeReader merge = MergeReader.create(adoc)) {
+            Document document = DocumentParser.parse(merge.readAll(), template.getKeywords());
+
+            System.out.println(">>>>>>>>");
+        }
+    }
 }

@@ -1,4 +1,4 @@
-// Copyright 2024 HiveVM.org. All rights reserved.
+// Copyright 2025 HiveVM.org. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
 package org.hivevm.doc.commonmark.images;
@@ -16,19 +16,20 @@ import org.commonmark.renderer.html.HtmlRenderer;
  */
 public class ImageExtension implements Parser.ParserExtension, HtmlRenderer.HtmlRendererExtension {
 
-  private ImageExtension() {}
+    private ImageExtension() {
+    }
 
-  public static Extension create() {
-    return new ImageExtension();
-  }
+    public static Extension create() {
+        return new ImageExtension();
+    }
 
-  @Override
-  public void extend(Parser.Builder parserBuilder) {
-    parserBuilder.customDelimiterProcessor(new ImageProcessor());
-  }
+    @Override
+    public void extend(Parser.Builder parserBuilder) {
+        parserBuilder.customDelimiterProcessor(new ImageProcessor());
+    }
 
-  @Override
-  public void extend(HtmlRenderer.Builder rendererBuilder) {
-    rendererBuilder.attributeProviderFactory(context -> ImageProvider.create());
-  }
+    @Override
+    public void extend(HtmlRenderer.Builder rendererBuilder) {
+        rendererBuilder.attributeProviderFactory(context -> ImageProvider.create());
+    }
 }

@@ -1,4 +1,4 @@
-// Copyright 2024 HiveVM.org. All rights reserved.
+// Copyright 2025 HiveVM.org. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
 package org.hivevm.doc.fop;
@@ -9,12 +9,9 @@ package org.hivevm.doc.fop;
  */
 public interface Fo {
 
-  String FONT_TEXT        = "TEXT";
-  String FONT_CODE        = "MONO";
+    String PAGESET_BOOK     = "book";
+    String PAGESET_CHAPTER  = "chapter";
+    String PAGESET_STANDARD = "standard";
 
-  String PAGE_CONTENT     = "region-body";
-
-  String PAGESET_BOOK     = "book";
-  String PAGESET_CHAPTER  = "chapter";
-  String PAGESET_STANDARD = "standard";
+    String COLOR = "#9c8b54";
 }

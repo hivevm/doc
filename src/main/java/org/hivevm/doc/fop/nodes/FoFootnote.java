@@ -1,4 +1,4 @@
-// Copyright 2024 HiveVM.org. All rights reserved.
+// Copyright 2025 HiveVM.org. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
 package org.hivevm.doc.fop.nodes;
@@ -10,33 +10,33 @@ import org.hivevm.doc.fop.nodes.set.FoFont;
  */
 public class FoFootnote extends FoNode implements FoFont<FoFootnote> {
 
-  private final FoBlock body;
+    private final FoBlock body;
 
-  /**
-   * Constructs an instance of {@link FoFootnote}.
-   *
-   * @param id
-   */
-  public FoFootnote(String id) {
-    super("fo:footnote");
-    FoBlock inline = FoBlock.inline();
-    addNode(inline);
-    inline.set("baseline-shift", "super").set("font-size", "smaller").addNode(FoNode.text(id));
+    /**
+     * Constructs an instance of {@link FoFootnote}.
+     *
+     * @param id
+     */
+    public FoFootnote(String id) {
+        super("fo:footnote");
+        FoBlock inline = FoBlock.inline();
+        addNode(inline);
+        inline.set("baseline-shift", "super").set("font-size", "smaller").addNode(FoNode.text(id));
 
-    FoNode content = new FoNode("fo:footnote-body");
-    addNode(content);
-    this.body = FoBlock.block();
-    content.addNode(this.body);
+        FoNode content = new FoNode("fo:footnote-body");
+        addNode(content);
+        this.body = FoBlock.block();
+        content.addNode(this.body);
 
-    inline = FoBlock.inline();
-    inline.set("baseline-shift", "super").set("font-size", "smaller").addNode(FoNode.text(id));
-    this.body.addNode(inline);
-  }
+        inline = FoBlock.inline();
+        inline.set("baseline-shift", "super").set("font-size", "smaller").addNode(FoNode.text(id));
+        this.body.addNode(inline);
+    }
 
-  /**
-   * Get the footnote body.
-   */
-  public FoBlock getBody() {
-    return this.body;
-  }
+    /**
+     * Get the footnote body.
+     */
+    public FoBlock getBody() {
+        return this.body;
+    }
 }

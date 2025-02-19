@@ -1,4 +1,4 @@
-// Copyright 2024 HiveVM.org. All rights reserved.
+// Copyright 2025 HiveVM.org. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
 package org.hivevm.doc.commonmark.markers;
@@ -10,28 +10,28 @@ import org.commonmark.node.CustomNode;
  */
 public class Marker extends CustomNode {
 
-  public enum Decoration {
-    Overline,
-    Underline,
-    Highlight,
-    Strikethrough;
-  }
+    public enum Decoration {
+        Overline,
+        Underline,
+        Highlight,
+        Strikethrough
+    }
 
-  private final Decoration decoration;
+    private final Decoration decoration;
 
-  /**
-   * Constructs an instance of {@link Marker}.
-   *
-   * @param decoration
-   */
-  protected Marker(Decoration decoration) {
-    this.decoration = decoration;
-  }
+    /**
+     * Constructs an instance of {@link Marker}.
+     *
+     * @param decoration
+     */
+    protected Marker(Decoration decoration) {
+        this.decoration = decoration;
+    }
 
-  /**
-   * Gets the {@link Decoration}..
-   */
-  public final Decoration getDecoration() {
-    return this.decoration;
-  }
+    /**
+     * Gets the {@link Decoration}..
+     */
+    public final Decoration getDecoration() {
+        return this.decoration;
+    }
 }
