@@ -109,7 +109,7 @@ class FoRenderer implements Renderer, NodeVisitor<FoContext> {
   @Override
   public final void visit(Chapter node, FoContext data) {
     switch (node.getLevel()) {
-      case 1:
+      case 0:
         String title = PageUtil.encode(node.getTitle());
         Properties properties = new Properties();
         properties.put("TITLE", title);
@@ -130,8 +130,9 @@ class FoRenderer implements Renderer, NodeVisitor<FoContext> {
         break;
 
       default:
-        String number =
-            (node.getParent().getOffset() < 0) ? PageUtil.getRomanNumber(node) : PageUtil.getPageNumber(node);
+//        String number =
+//            (node.getParent().getOffset() < 0) ? PageUtil.getRomanNumber(node) : PageUtil.getPageNumber(node);
+        String number = PageUtil.getPageNumber(node);
 
         FoBlock block = FoBlock.block();
         block.setFontWeight("bold").setFontSize("24pt");

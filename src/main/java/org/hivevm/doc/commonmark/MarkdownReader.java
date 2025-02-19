@@ -74,6 +74,7 @@ public class MarkdownReader extends Reader {
   private void merge(File file, String header, String title, Request request) throws IOException {
     boolean isCode = false;
     String level = header;
+    String lastLine = "";
     File path = file.getParentFile().getAbsoluteFile();
     for (String line : Files.readAllLines(file.toPath())) {
       if (line.startsWith("~~~")) {
@@ -92,6 +93,14 @@ public class MarkdownReader extends Reader {
         request.writeln(line);
         continue;
       }
+
+      // Avoid not rendered tables
+      if (line.trim().startsWith("|")) {
+        if (!lastLine.startsWith("|") && !lastLine.isEmpty())
+          request.writeln("\n");
+      }
+
+      lastLine = line.trim();
 
       // Processes file includes.
       Matcher matcher = MarkdownReader.INCLUDE.matcher(line);

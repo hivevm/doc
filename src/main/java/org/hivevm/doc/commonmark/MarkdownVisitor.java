@@ -28,6 +28,14 @@ import org.commonmark.node.SoftLineBreak;
 import org.commonmark.node.StrongEmphasis;
 import org.commonmark.node.Text;
 import org.commonmark.node.ThematicBreak;
+import org.hivevm.doc.commonmark.images.ImageAttributes;
+import org.hivevm.doc.commonmark.tables.TableRow;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The {@link MarkdownVisitor} class.
@@ -261,7 +269,36 @@ public class MarkdownVisitor extends AbstractVisitor {
    */
   @Override
   public void visit(HtmlBlock node) {
-    visit(node, "HtmlBlock");
+    String literal = node.getLiteral().trim();
+    if(literal.startsWith("<img") && literal.endsWith(">")) {
+      Matcher matcher = Pattern.compile("(\\w+)=\"([^\"]+)\"").matcher(literal);
+      Image image = new Image();
+      Text text = new Text();
+      Map<String, String> attrs = new HashMap<>();
+      while (matcher.find()) {
+        switch (matcher.group(1)) {
+          case "src":
+          image.setDestination(matcher.group(2));
+            break;
+          case "width":
+            attrs.put("width", matcher.group(2));
+            break;
+          case "align":
+            attrs.put("align", matcher.group(2));
+            break;
+          case "alt":
+            text.setLiteral(matcher.group(2));
+            break;
+          default:
+        }
+      }
+      if (text.getLiteral() != null)
+        image.appendChild(text);
+      if (!attrs.isEmpty())
+        image.appendChild(new ImageAttributes(attrs));
+      visit(image);
+    } else
+      visit(node, "HtmlBlock");
   }
 
   /**

@@ -91,14 +91,14 @@ public class FoContext {
     page.setLanguage("en").setInitialPageNumber(initial ? "1" : "auto");
     page.setId(id);
 
-    switch (name) {
-      case Fo.PAGESET_CHAPTER:
+//    switch (name) {
+//      case Fo.PAGESET_CHAPTER:
         page.setFormat("1");
-        break;
+//        break;
 
-      default:
-        page.setFormat("I");
-    }
+//      default:
+//        page.setFormat("I");
+//    }
 
     // Foot separator
     FoStaticContent content = new FoStaticContent("xsl-footnote-separator");
