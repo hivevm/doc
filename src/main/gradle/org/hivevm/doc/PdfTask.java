@@ -19,12 +19,11 @@ import org.hivevm.util.ReplacerRequestHandler;
 import org.hivevm.util.lambda.RequestStreamBuilder;
 import org.hivevm.util.lambda.RequestStreamHandler;
 
+import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.inject.Inject;
 
 /**
  * The {@link PdfTask} class.

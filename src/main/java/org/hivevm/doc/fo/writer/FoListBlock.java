@@ -3,14 +3,13 @@
 
 package org.hivevm.doc.fo.writer;
 
-import org.apache.batik.dom.xbl.XBLManager;
 import org.hivevm.doc.fo.writer.set.*;
 import org.hivevm.util.xml.XmlBuilder;
 
 /**
  * The {@link FoListBlock} class.
  */
-public class FoListBlock extends FoNode implements FoSpace<FoListBlock>, FoMargin<FoListBlock>,
+public class FoListBlock extends FoAbstract implements FoSpace<FoListBlock>, FoMargin<FoListBlock>,
         FoFont<FoListBlock>,
         FoBreak<FoListBlock>, FoBackground<FoListBlock>, FoIndent<FoListBlock> {
 
@@ -18,7 +17,7 @@ public class FoListBlock extends FoNode implements FoSpace<FoListBlock>, FoMargi
      * Constructs an instance of {@link FoListBlock}.
      */
     public FoListBlock(XmlBuilder builder) {
-        super("fo:list-block", builder);
+        super("list-block", builder);
     }
 
     public FoListBlock setKeepWithNext(String keep) {

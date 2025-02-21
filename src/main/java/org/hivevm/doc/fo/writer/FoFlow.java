@@ -3,14 +3,14 @@
 
 package org.hivevm.doc.fo.writer;
 
-import org.hivevm.doc.fo.writer.set.FoIndent;
 import org.hivevm.doc.fo.writer.FoBlockContainer.Position;
+import org.hivevm.doc.fo.writer.set.FoIndent;
 import org.hivevm.util.xml.XmlBuilder;
 
 /**
  * The {@link FoFlow} class.
  */
-public class FoFlow extends FoNode implements FoIndent<FoFlow> {
+public class FoFlow extends FoAbstract implements FoIndent<FoFlow> {
 
     /**
      * Constructs an instance of {@link FoFlow}.
@@ -18,7 +18,7 @@ public class FoFlow extends FoNode implements FoIndent<FoFlow> {
      * @param reference
      */
     public FoFlow(String reference, XmlBuilder builder) {
-        super("fo:flow", builder);
+        super("flow", builder);
         set("flow-name", reference);
     }
 

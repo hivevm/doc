@@ -7,19 +7,18 @@ import org.hivevm.doc.fo.writer.set.FoBackground;
 import org.hivevm.doc.fo.writer.set.FoBorder;
 import org.hivevm.doc.fo.writer.set.FoMargin;
 import org.hivevm.doc.fo.writer.set.FoPadding;
-import org.hivevm.util.xml.XmlBuilder;
 
 /**
  * The {@link FoRegion} class.
  */
-public class FoRegion extends FoNode
+public class FoRegion extends FoAbstract
         implements FoMargin<FoRegion>, FoBorder<FoRegion>, FoPadding<FoRegion>, FoBackground<FoRegion> {
 
     /**
      * Constructs an instance of {@link FoRegion}.
      */
-    public FoRegion(XmlBuilder builder) {
-        super("fo:region-body", builder);
+    public FoRegion(FoSimplePageMaster master) {
+        super("region-body", master);
     }
 
     /**
@@ -28,8 +27,8 @@ public class FoRegion extends FoNode
      * @param name
      * @param region
      */
-    public FoRegion(String name, String region, XmlBuilder builder) {
-        super("fo:region-" + region, builder);
+    public FoRegion(String name, String region, FoSimplePageMaster master) {
+        super("region-" + region, master);
         setRegionName(name);
     }
 

@@ -42,7 +42,8 @@ public abstract class StAX {
     /**
      * Constructs a(n) {@link StAX} object.
      */
-    private StAX() {}
+    private StAX() {
+    }
 
     /**
      * Creates an instance of {@link XMLStreamReader}.
@@ -70,8 +71,8 @@ public abstract class StAX {
      */
     public static XMLStreamWriter createWriter(Writer writer, int indent) throws XMLStreamException {
         XMLStreamWriter xmlWriter = StAX.createWriter(writer);
-        return (XMLStreamWriter) Proxy.newProxyInstance(XMLStreamWriter.class.getClassLoader(),
-                new Class[] { XMLStreamWriter.class }, new XmlPrettyWriter(xmlWriter, indent));
+        return (indent == 0) ? xmlWriter : (XMLStreamWriter) Proxy.newProxyInstance(XMLStreamWriter.class.getClassLoader(),
+                new Class[]{XMLStreamWriter.class}, new XmlPrettyWriter(xmlWriter, indent));
     }
 
     /**

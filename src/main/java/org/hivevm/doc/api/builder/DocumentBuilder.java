@@ -87,7 +87,7 @@ public class DocumentBuilder extends PageBuilder implements Document {
                 });
 
         setTitle(stream().filter(n -> n instanceof Header)
-                .map(n -> (Header)n)
+                .map(n -> (Header) n)
                 .filter(h -> h.getLevel() == 1)
                 .map(h -> h.getTitle())
                 .findFirst().orElse(null));

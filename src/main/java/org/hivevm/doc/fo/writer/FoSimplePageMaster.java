@@ -4,32 +4,21 @@
 package org.hivevm.doc.fo.writer;
 
 import org.hivevm.doc.fo.writer.set.FoMargin;
-import org.hivevm.util.xml.XmlBuilder;
 
 /**
  * The {@link FoSimplePageMaster} class.
  */
-public class FoSimplePageMaster extends FoNode implements FoMargin<FoSimplePageMaster> {
-
-    private final String   name;
-    private final FoRegion body;
+public class FoSimplePageMaster extends FoAbstract implements FoMargin<FoSimplePageMaster> {
 
     /**
      * Constructs an instance of {@link FoSimplePageMaster}.
      *
      * @param name
      */
-    public FoSimplePageMaster(String name, XmlBuilder builder) {
-        super("fo:simple-page-master", builder);
-        this.name = name;
+    public FoSimplePageMaster(String name, FoAbstract layout) {
+        super("simple-page-master", layout);
         set("master-name", name);
         setPageSize("210mm", "297mm");
-        this.body = new FoRegion(builder);
-        addNode(this.body);
-    }
-
-    public final String getPageName() {
-        return this.name;
     }
 
     public void setPageSize(String width, String height) {
@@ -45,31 +34,23 @@ public class FoSimplePageMaster extends FoNode implements FoMargin<FoSimplePageM
         set("page-height", height);
     }
 
-    public FoRegion setBodyRegion(String name) {
-        return this.body.setRegionName(name);
+    public FoRegion createBodyRegion(String name) {
+        return new FoRegion(this).setRegionName(name);
     }
 
-    public FoRegion addRegionBefore(String name) {
-        FoRegion region = new FoRegion(name, "before", getBuilder());
-        addNode(region);
-        return region;
+    public FoRegion createRegionBefore(String name) {
+        return new FoRegion(name, "before", this);
     }
 
-    public FoRegion addRegionAfter(String name) {
-        FoRegion region = new FoRegion(name, "after", getBuilder());
-        addNode(region);
-        return region;
+    public FoRegion createRegionAfter(String name) {
+        return new FoRegion(name, "after", this);
     }
 
-    public FoRegion addRegionStart(String name) {
-        FoRegion region = new FoRegion(name, "start", getBuilder());
-        addNode(region);
-        return region;
+    public FoRegion createRegionStart(String name) {
+        return new FoRegion(name, "start", this);
     }
 
-    public FoRegion addRegionEnd(String name) {
-        FoRegion region = new FoRegion(name, "end", getBuilder());
-        addNode(region);
-        return region;
+    public FoRegion createRegionEnd(String name) {
+        return new FoRegion(name, "end", this);
     }
 }

@@ -3,12 +3,11 @@
 
 package org.hivevm.util.xml;
 
+import javax.xml.stream.XMLStreamWriter;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.xml.stream.XMLStreamWriter;
 
 /**
  * The {@link XmlPrettyWriter} class.
@@ -23,8 +22,8 @@ final class XmlPrettyWriter implements InvocationHandler {
     private final XMLStreamWriter writer;
 
 
-    private int                         depth           = 0;
-    private final Map<Integer, Boolean> hasTextElement  = new HashMap<>();
+    private       int                   depth          = 0;
+    private final Map<Integer, Boolean> hasTextElement = new HashMap<>();
 
     /**
      * Constructs an instance of {@link XmlPrettyWriter}.
@@ -59,7 +58,7 @@ final class XmlPrettyWriter implements InvocationHandler {
 
             case "writeEndElement":
                 this.depth--;
-                if (this.hasTextElement.get(this.depth) == false) {
+                if (!this.hasTextElement.get(this.depth)) {
                     this.writer.writeCharacters(XmlPrettyWriter.LINEFEED_CHAR);
                     this.writer.writeCharacters(indent(this.depth * this.indent));
                 }

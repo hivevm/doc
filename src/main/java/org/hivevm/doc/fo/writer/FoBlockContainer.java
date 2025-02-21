@@ -12,7 +12,7 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoBlockContainer} class.
  */
-public class FoBlockContainer extends FoNode implements FoSpace<FoBlockContainer>,
+public class FoBlockContainer extends FoAbstract implements FoSpace<FoBlockContainer>,
         FoBorder<FoBlockContainer>,
         FoFont<FoBlockContainer>, FoBackground<FoBlockContainer> {
 
@@ -33,7 +33,7 @@ public class FoBlockContainer extends FoNode implements FoSpace<FoBlockContainer
      * Constructs an instance of {@link FoBlockContainer}.
      */
     public FoBlockContainer(Position position, XmlBuilder builder) {
-        super("fo:block-container", builder);
+        super("block-container", builder);
         set("absolute-position", position.value);
     }
 

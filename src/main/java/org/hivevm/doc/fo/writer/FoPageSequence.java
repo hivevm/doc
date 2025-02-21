@@ -8,7 +8,7 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoPageSequence} class.
  */
-public class FoPageSequence extends FoNode {
+public class FoPageSequence extends FoAbstract {
 
     /**
      * Constructs an instance of {@link FoPageSequence}.
@@ -16,7 +16,7 @@ public class FoPageSequence extends FoNode {
      * @param reference
      */
     public FoPageSequence(String reference, XmlBuilder builder) {
-        super("fo:page-sequence", builder);
+        super("page-sequence", builder);
         set("master-reference", reference);
     }
 

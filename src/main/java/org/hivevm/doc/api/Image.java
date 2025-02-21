@@ -9,7 +9,7 @@ package org.hivevm.doc.api;
 public record Image(String url, String text, String align, String width, String height) implements Node {
 
     @Override
-    public final <R> void accept(DocumentVisitor<R> visitor, R data) {
+    public <R> void accept(DocumentVisitor<R> visitor, R data) {
         visitor.visit(this, data);
     }
 }

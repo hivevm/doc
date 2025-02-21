@@ -13,9 +13,11 @@ import java.io.*;
 public class FoRequestHandler implements RequestStreamHandler {
 
     private final Template template;
+    private final boolean  isFormatted;
 
-    public FoRequestHandler(Template template) {
+    public FoRequestHandler(Template template, boolean isFormatted) {
         this.template = template;
+        this.isFormatted = isFormatted;
     }
 
     public void handleRequest(InputStream input, OutputStream output, File context) throws IOException {
@@ -23,7 +25,7 @@ public class FoRequestHandler implements RequestStreamHandler {
             String text = String.join("\n", reader.lines().toList());
             Document document = DocumentParser.parse(text, template.getKeywords());
 
-            FoGenerator generator = new FoGenerator(template);
+            FoGenerator generator = new FoGenerator(template, isFormatted);
             try (InputStream istream = generator.generate(document)) {
                 output.write(istream.readAllBytes());
             }

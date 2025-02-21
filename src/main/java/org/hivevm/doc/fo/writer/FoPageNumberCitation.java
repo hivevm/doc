@@ -8,10 +8,10 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoPageNumberCitation} class.
  */
-public class FoPageNumberCitation extends FoNode {
+public class FoPageNumberCitation extends FoAbstract {
 
     public FoPageNumberCitation(String id, XmlBuilder builder) {
-        super("fo:page-number-citation", builder);
+        super("page-number-citation", builder);
         set("ref-id", id);
     }
 }

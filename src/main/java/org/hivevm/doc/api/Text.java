@@ -18,7 +18,7 @@ public record Text(String text, boolean isCode) implements Node {
     }
 
     @Override
-    public final <R> void accept(DocumentVisitor<R> visitor, R data) {
+    public <R> void accept(DocumentVisitor<R> visitor, R data) {
         visitor.visit(this, data);
     }
 }

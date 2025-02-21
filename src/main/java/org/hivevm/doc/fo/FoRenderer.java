@@ -45,7 +45,7 @@ public abstract class FoRenderer<C> implements PageRenderer<C> {
             String content = text.substring(offset);
             FoBlock node = FoBlock.inline(block.getBuilder());
             if (content.startsWith("<fo:page-number"))
-                node.addNode(FoNode.create("fo:page-number", block.getBuilder()));
+                node.addNode(FoNode.create("page-number", block.getBuilder()));
             else
                 node.addContent(content);
             block.addNode(node);

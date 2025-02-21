@@ -10,7 +10,10 @@ import org.hivevm.util.xml.StAX;
 import org.hivevm.util.xml.XmlBuilder;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,12 +26,14 @@ import java.util.function.BiConsumer;
 public class FoGenerator {
 
     private final Template template;
+    private final boolean  isFormatted;
 
     /**
      * Sets the filename
      */
-    public FoGenerator(Template template) {
+    public FoGenerator(Template template, boolean isFormatted) {
         this.template = template;
+        this.isFormatted = isFormatted;
     }
 
     private static void renderAbsolute(PageColumn panel, FoStaticContent node, Properties properties) {
@@ -114,23 +119,18 @@ public class FoGenerator {
                 .filter(f -> f.getKind() == TemplateFont.Kind.MONOSPACE)
                 .findFirst().get().getName();
 
-
-//        builder.addNamespace("fo", "http://www.w3.org/1999/XSL/Format");
-//        builder.addNamespace("fox", "http://xmlgraphics.apache.org/fop/extensions");
-
         FoRoot root = new FoRoot(fontText, builder);
-        root.set("xmlns:fo", "http://www.w3.org/1999/XSL/Format");
-        root.set("xmlns:fox", "http://xmlgraphics.apache.org/fop/extensions");
+        FoAbstract layout = root.createLayout();
 
         template.forEachPage(p -> {
-            FoSimplePageMaster simple = new FoSimplePageMaster(p.getName(), builder);
+            FoSimplePageMaster simple = new FoSimplePageMaster(p.getName(), layout);
             simple.setMarginTop(p.marginTop());
             simple.setMarginLeft(p.marginLeft());
             simple.setMarginRight(p.marginRight());
             simple.setMarginBottom(p.marginBottom());
             simple.setPageSize(p.pageWidth(), p.pageHeight());
 
-            FoRegion content = simple.setBodyRegion("region-body");
+            FoRegion content = simple.createBodyRegion("region-body");
             content.setMarginTop(p.paddingTop());
             content.setMarginLeft(p.paddingLeft());
             content.setMarginRight(p.paddingRight());
@@ -138,23 +138,19 @@ public class FoGenerator {
             content.setColumns(p.columnCount(), p.columnGap());
 
             p.forEachRegion(r -> (switch (r.getRegion()) {
-                case TOP -> simple.addRegionBefore(r.getName());
-                case LEFT -> simple.addRegionStart(r.getName());
-                case RIGHT -> simple.addRegionEnd(r.getName());
-                case BOTTOM -> simple.addRegionAfter(r.getName());
+                case TOP -> simple.createRegionBefore(r.getName());
+                case LEFT -> simple.createRegionStart(r.getName());
+                case RIGHT -> simple.createRegionEnd(r.getName());
+                case BOTTOM -> simple.createRegionAfter(r.getName());
             }).setExtent(r.getExtent()).setColumns(r.columnCount(), r.columnGap()));
-
-            root.getLayouts().addNode(simple);
         });
 
         Map<String, BiConsumer<FoPageSequence, Properties>> pages = new HashMap<>();
         template.forEachPageSet(s -> {
-            FoPageSequenceMaster master = new FoPageSequenceMaster(s.getName(), builder);
+            FoPageSequenceMaster master = new FoPageSequenceMaster(s.getName(), layout);
             s.forEachPage((p, m) -> master.addPage(p.getName(), m));
-            pages.put(s.getName(),
-                    (sequence, properties) ->
-                            s.forEachPage((p, m) -> renderPage(p, sequence, properties)));
-            root.getLayouts().addNode(master);
+            pages.put(s.getName(), (sequence, properties) ->
+                    s.forEachPage((p, m) -> renderPage(p, sequence, properties)));
         });
 
         return new FoContext(root, template, pages, fontCode);
@@ -165,19 +161,19 @@ public class FoGenerator {
      */
     public final InputStream generate(Document document) throws IOException {
         StringWriter writer = new StringWriter();
-//        try (XmlBuilder builder = new XmlBuilder(StAX.createWriter(writer, 2))) {
-//            FoContext context = createContext(builder);
-//            document.accept(new FoDocumentRenderer(template), context);
-//            printer.write(context.getRoot().build());
-//        }
-//        catch (XMLStreamException e) {
-//            throw new IOException(e);
-//        }
-        try (PrintWriter printer = new PrintWriter(writer)) {
-            FoContext context = createContext(null);
+
+        try (XmlBuilder builder = new XmlBuilder(StAX.createWriter(writer, isFormatted ? 2 : 0))) {
+            builder.addNamespace("fo", "http://www.w3.org/1999/XSL/Format");
+            builder.addNamespace("fox", "http://xmlgraphics.apache.org/fop/extensions");
+            builder.setNamespace("http://www.w3.org/1999/XSL/Format");
+
+            FoContext context = createContext(builder);
             document.accept(new FoDocumentRenderer(template), context);
-            printer.write(context.getRoot().build());
+            context.getRoot().close();
+        } catch (XMLStreamException e) {
+            throw new IOException(e);
         }
+
         return new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8));
     }
 }

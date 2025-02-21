@@ -8,18 +8,14 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoRoot} class.
  */
-public class FoRoot extends FoNode {
-
-    private final FoNode layouts;
-    private final FoNode bookmarks;
+public class FoRoot extends FoAbstract {
 
     /**
      * Constructs an instance of {@link FoRoot}.
      */
     public FoRoot(String font, XmlBuilder builder) {
-        super("fo:root", builder);
-        this.layouts = FoNode.create("fo:layout-master-set", builder);
-        this.bookmarks = FoNode.create("fo:bookmark-tree", builder);
+        super("root", builder);
+        builder.push("root");
         set("font-family", font).set("font-size", "10pt");
         set("font-selection-strategy", "character-by-character");
         set("text-align", "justify").set("line-height", "1.4em");
@@ -30,14 +26,28 @@ public class FoRoot extends FoNode {
     /**
      * Get the {@link FoNode} for the layout master set.
      */
-    public final FoNode getLayouts() {
-        return this.layouts;
+    public final FoAbstract createLayout() {
+        return new FoAbstract("layout-master-set", this);
     }
 
-    public FoBookmark addBookmark(String id) {
-        FoBookmark bookmark = new FoBookmark(id, getBuilder());
-        this.bookmarks.addNode(bookmark);
-        return bookmark;
+    /**
+     * Get the {@link FoNode} for the layout master set.
+     */
+    public final FoAbstract createBookmark() {
+        return new FoAbstract("bookmark-tree", this);
+    }
+
+    /**
+     * Set an attribute.
+     *
+     * @param name
+     * @param value
+     */
+    @Override
+    public final FoNode set(String name, String value) {
+        if (hasChildren())
+            throw new IllegalArgumentException();
+        return setAttribute(name, value);
     }
 
     public FoPageSequence addPageSequence(String reference) {
@@ -46,34 +56,16 @@ public class FoRoot extends FoNode {
         return sequence;
     }
 
-    public FoPageSequence addPageSequence(FoPageSequenceMaster pages) {
-        FoPageSequence sequence = new FoPageSequence(pages.getPageName(), getBuilder());
-        addNode(sequence);
-        return sequence;
-    }
-
     /**
      * Build the FO document.
      */
     @Override
-    public final String build() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-
-        FoUtil.writeStart(buffer, getTagName(), getAttributes());
-
-        if (getLayouts().hasChildren()) {
-            buffer.append(getLayouts().build());
-        }
-
-        if (this.bookmarks.hasChildren()) {
-            buffer.append(this.bookmarks.build());
-        }
-
-        forEach(b -> buffer.append(b.build()));
-
-        FoUtil.writeEnd(buffer, getTagName());
-        buffer.append("\n");
-        return buffer.toString();
+    public final void close() {
+        XmlBuilder builder = getBuilder();
+        getAttributes().keySet().stream()
+                .filter(n -> getAttributes().get(n) != null)
+                .forEach(n -> builder.set(n, getAttributes().get(n)));
+        forEach(FoNode::close);
+        builder.build();
     }
 }

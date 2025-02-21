@@ -11,14 +11,14 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoTableRow} class.
  */
-public class FoTableRow extends FoNode implements FoBorder<FoTableRow>, FoFont<FoTableRow>,
+public class FoTableRow extends FoAbstract implements FoBorder<FoTableRow>, FoFont<FoTableRow>,
         FoBackground<FoTableRow> {
 
     /**
      * Constructs an instance of {@link FoTableRow}.
      */
     FoTableRow(XmlBuilder builder) {
-        super("fo:table-row", builder);
+        super("table-row", builder);
     }
 
     public FoTableRow setDisplayAlign(String align) {

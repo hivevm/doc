@@ -3,23 +3,18 @@
 
 package org.hivevm.doc;
 
-import java.io.*;
-
-import javax.inject.Inject;
-
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.DirectoryProperty;
-import org.gradle.api.tasks.InputDirectory;
-import org.gradle.api.tasks.OutputDirectory;
-import org.gradle.api.tasks.PathSensitive;
-import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.*;
 import org.gradle.api.tasks.options.Option;
 import org.gradle.work.ChangeType;
 import org.gradle.work.Incremental;
 import org.gradle.work.InputChanges;
 import org.hivevm.doc.md.MarkdownReader;
 import org.hivevm.util.Resolver;
+
+import javax.inject.Inject;
+import java.io.*;
 
 /**
  * The {@link MergeTask} class.

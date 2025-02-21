@@ -9,10 +9,10 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoLeader} class.
  */
-public class FoLeader extends FoNode implements FoPadding<FoLeader> {
+public class FoLeader extends FoAbstract implements FoPadding<FoLeader> {
 
     public FoLeader(XmlBuilder builder) {
-        super("fo:leader", builder);
+        super("leader", builder);
     }
 
     public FoLeader setPattern(String value) {

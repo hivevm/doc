@@ -3,13 +3,12 @@
 
 package org.hivevm.doc.fo.writer;
 
-import org.hivevm.doc.fop.nodes.FoBlockContainer.Position;
 import org.hivevm.util.xml.XmlBuilder;
 
 /**
  * The {@link FoStaticContent} class.
  */
-public class FoStaticContent extends FoNode {
+public class FoStaticContent extends FoAbstract {
 
     /**
      * Constructs an instance of {@link FoStaticContent}.
@@ -17,7 +16,7 @@ public class FoStaticContent extends FoNode {
      * @param reference
      */
     public FoStaticContent(String reference, XmlBuilder builder) {
-        super("fo:static-content", builder);
+        super("static-content", builder);
         set("flow-name", reference);
     }
 

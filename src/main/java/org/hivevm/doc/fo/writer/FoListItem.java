@@ -12,7 +12,7 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoListItem} class.
  */
-public class FoListItem extends FoNode
+public class FoListItem extends FoAbstract
         implements FoSpace<FoListItem>, FoMargin<FoListItem>, FoFont<FoListItem>,
         FoBackground<FoListItem> {
 
@@ -24,13 +24,13 @@ public class FoListItem extends FoNode
      * @param label
      */
     public FoListItem(String label, XmlBuilder builder) {
-        super("fo:list-item", builder);
+        super("list-item", builder);
 
-        FoNode head = FoNode.create("fo:list-item-label", builder);
+        FoNode head = FoNode.create("list-item-label", builder);
         head.set("end-indent", "label-end()");
         head.addNode(FoBlock.block(builder).addContent(label));
 
-        FoNode body = FoNode.create("fo:list-item-body", builder);
+        FoNode body = FoNode.create("list-item-body", builder);
         body.set("start-indent", "body-start()");
 
         this.content = FoBlock.block(builder);

@@ -9,7 +9,7 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoBlock} class.
  */
-public class FoBlock extends FoNode implements FoSpace<FoBlock>, FoMargin<FoBlock>,
+public class FoBlock extends FoAbstract implements FoSpace<FoBlock>, FoMargin<FoBlock>,
         FoBorder<FoBlock>,
         FoPadding<FoBlock>, FoFont<FoBlock>, FoBreak<FoBlock>, FoBackground<FoBlock>,
         FoIndent<FoBlock> {
@@ -91,10 +91,10 @@ public class FoBlock extends FoNode implements FoSpace<FoBlock>, FoMargin<FoBloc
     }
 
     public static FoBlock block(XmlBuilder builder) {
-        return new FoBlock("fo:block", builder);
+        return new FoBlock("block", builder);
     }
 
     public static FoBlock inline(XmlBuilder builder) {
-        return new FoBlock("fo:inline", builder);
+        return new FoBlock("inline", builder);
     }
 }

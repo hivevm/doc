@@ -33,7 +33,7 @@ public class Pdf2Test {
             String text = String.join("\n", reader.lines().toList());
             Document document = DocumentParser.parse(text, template.getKeywords());
 
-            FoGenerator generator = new FoGenerator(template);
+            FoGenerator generator = new FoGenerator(template, false);
             try (InputStream istream = generator.generate(document);
                  OutputStream ostream = new FileOutputStream(output)) {
                 PdfRenderer renderer = new PdfRenderer(template);
@@ -43,7 +43,7 @@ public class Pdf2Test {
     }
 
     @Test
-    public void testPDF2() throws Exception {
+    public void testFo() throws Exception {
         Template template = Template.parse(":default.ui.xml", new File("."));
 
         File markdown = new File("README.md").getAbsoluteFile();
@@ -52,7 +52,7 @@ public class Pdf2Test {
         RequestStreamBuilder builder = new RequestStreamBuilder();
         builder.append(new MarkdownRequestHandler());
         builder.append(new ReplacerRequestHandler(Defaults.ENVIRONMENT));
-        builder.append(new FoRequestHandler(template));
+        builder.append(new FoRequestHandler(template, true));
 //        builder.append(new PdfRenderer(template));
         RequestStreamHandler handler = builder.build();
 

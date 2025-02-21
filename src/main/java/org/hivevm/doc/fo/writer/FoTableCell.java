@@ -12,7 +12,7 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoTableCell} class.
  */
-public class FoTableCell extends FoNode
+public class FoTableCell extends FoAbstract
         implements FoBorder<FoTableCell>, FoPadding<FoTableCell>, FoFont<FoTableCell>,
         FoBackground<FoTableCell> {
 
@@ -20,7 +20,7 @@ public class FoTableCell extends FoNode
      * Constructs an instance of {@link FoTableCell}.
      */
     FoTableCell(XmlBuilder builder) {
-        super("fo:table-cell", builder);
+        super("table-cell", builder);
     }
 
     public FoTableCell setDisplayAlign(String align) {

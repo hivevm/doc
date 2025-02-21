@@ -79,15 +79,6 @@ public class FoContext {
     }
 
     /**
-     * Add a bookmark by id.
-     *
-     * @param id
-     */
-    public final FoBookmark addBookmark(String id) {
-        return this.root.addBookmark(id);
-    }
-
-    /**
      * Get the code font name.
      */
     public final String getCodeFont() {

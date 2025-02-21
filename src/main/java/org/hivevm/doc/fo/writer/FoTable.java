@@ -11,14 +11,14 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoTable} class.
  */
-public class FoTable extends FoNode implements FoSpace<FoTable>, FoBorder<FoTable>,
+public class FoTable extends FoAbstract implements FoSpace<FoTable>, FoBorder<FoTable>,
         FoBackground<FoTable> {
 
     /**
      * Constructs an instance of {@link FoTable}.
      */
     public FoTable(XmlBuilder builder) {
-        super("fo:table", builder);
+        super("table", builder);
     }
 
     public FoTable setTableLayout(String fixed) {
@@ -47,7 +47,7 @@ public class FoTable extends FoNode implements FoSpace<FoTable>, FoBorder<FoTabl
     }
 
     public FoTable addColumn(String number, String width) {
-        FoNode builder = FoNode.create("fo:table-column", getBuilder());
+        FoNode builder = FoNode.create("table-column", getBuilder());
         builder.set("column-number", number);
         builder.set("column-width", width);
         addNode(builder);
@@ -55,15 +55,15 @@ public class FoTable extends FoNode implements FoSpace<FoTable>, FoBorder<FoTabl
     }
 
     public FoTableArea addHead() {
-        return addArea("fo:table-header", "0pt", "0pt");
+        return addArea("table-header", "0pt", "0pt");
     }
 
     public FoTableArea addBody() {
-        return addArea("fo:table-body", "0pt", "0pt");
+        return addArea("table-body", "0pt", "0pt");
     }
 
     public FoTableArea addFoot() {
-        return addArea("fo:table-footer", "0pt", "0pt");
+        return addArea("table-footer", "0pt", "0pt");
     }
 
     private FoTableArea addArea(String foName, String startIndent, String endIndent) {

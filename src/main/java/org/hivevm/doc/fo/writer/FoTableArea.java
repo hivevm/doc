@@ -10,7 +10,7 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoTableArea} class.
  */
-public class FoTableArea extends FoNode implements FoIndent<FoTableArea>,
+public class FoTableArea extends FoAbstract implements FoIndent<FoTableArea>,
         FoBackground<FoTableArea> {
 
     /**

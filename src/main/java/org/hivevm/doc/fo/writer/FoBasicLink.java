@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * The {@link FoBasicLink} class.
  */
-public class FoBasicLink extends FoNode implements FoFont<FoBasicLink> {
+public class FoBasicLink extends FoAbstract implements FoFont<FoBasicLink> {
 
     private static final Pattern EXTERNAL = Pattern.compile("^[a-zA-Z]+:.+");
 
@@ -21,7 +21,7 @@ public class FoBasicLink extends FoNode implements FoFont<FoBasicLink> {
      * @param url
      */
     public FoBasicLink(String url, XmlBuilder builder) {
-        super("fo:basic-link", builder);
+        super("basic-link", builder);
         if (FoBasicLink.EXTERNAL.matcher(url).find()) {
             set("external-destination", url);
         } else {

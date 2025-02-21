@@ -6,7 +6,8 @@ package org.hivevm.doc.commonmark;
 import org.commonmark.node.*;
 import org.hivevm.doc.commonmark.images.ImageAttributes;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

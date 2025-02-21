@@ -9,7 +9,7 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoFootnote} class.
  */
-public class FoFootnote extends FoNode implements FoFont<FoFootnote> {
+public class FoFootnote extends FoAbstract implements FoFont<FoFootnote> {
 
     private final FoBlock body;
 
@@ -19,12 +19,12 @@ public class FoFootnote extends FoNode implements FoFont<FoFootnote> {
      * @param id
      */
     public FoFootnote(String id, XmlBuilder builder) {
-        super("fo:footnote", builder);
+        super("footnote", builder);
         FoBlock inline = FoBlock.inline(getBuilder());
         addNode(inline);
         inline.set("baseline-shift", "super").set("font-size", "smaller").addNode(FoNode.text(id, builder));
 
-        FoNode content = new FoNode("fo:footnote-body", builder);
+        FoNode content = new FoAbstract("footnote-body", builder);
         addNode(content);
         this.body = FoBlock.block(getBuilder());
         content.addNode(this.body);

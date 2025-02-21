@@ -8,7 +8,7 @@ import org.hivevm.util.xml.XmlBuilder;
 /**
  * The {@link FoExternalGraphic} class.
  */
-public class FoExternalGraphic extends FoNode {
+public class FoExternalGraphic extends FoAbstract {
 
     /**
      * Constructs an instance of {@link FoExternalGraphic}.
@@ -16,7 +16,7 @@ public class FoExternalGraphic extends FoNode {
      * @param url
      */
     public FoExternalGraphic(String url, XmlBuilder builder) {
-        super("fo:external-graphic", builder);
+        super("external-graphic", builder);
         set("src", "url(" + url + ")");
     }
 

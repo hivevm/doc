@@ -3,7 +3,6 @@
 
 package org.hivevm.doc.fo;
 
-import org.hivevm.doc.api.List;
 import org.hivevm.doc.api.*;
 import org.hivevm.doc.api.Table.AreaType;
 import org.hivevm.doc.api.Table.Column;
@@ -12,8 +11,10 @@ import org.hivevm.doc.fo.writer.*;
 import org.hivevm.doc.template.PageStyle;
 import org.hivevm.doc.template.Template;
 
-import java.util.*;
-import java.util.function.Supplier;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -36,10 +37,10 @@ class FoDocumentRenderer implements DocumentVisitor<FoContext> {
 
     @Override
     public final void visit(Document doc, FoContext data) {
+        String tocId = Long.toHexString(new Random().nextLong());
+
         // Renders the Bookmark
-        BookmarkRenderer renderer = new BookmarkRenderer();
-        data.addBookmark(FoDocumentRenderer.BOOK_ID).setTitle(doc.getTitle());
-        doc.stream().forEach(n -> n.accept(renderer, data));
+        doc.accept(new FoBookmarkRenderer(FoDocumentRenderer.BOOK_ID, tocId), data.getRoot().createBookmark());
 
         // Renders the cover page
         Properties properties = new Properties();
@@ -53,8 +54,8 @@ class FoDocumentRenderer implements DocumentVisitor<FoContext> {
         doc.stream().forEach(c -> c.accept(this, data));
 
         // Table of Content
-        data.createFlow("id_toc", Fo.PAGESET_STANDARD, true, properties, data.getRoot().getBuilder());
-        createToc(doc, data);
+        data.createFlow(tocId, Fo.PAGESET_STANDARD, true, properties, data.getRoot().getBuilder());
+        createToc(tocId, doc, data);
     }
 
 
@@ -66,23 +67,11 @@ class FoDocumentRenderer implements DocumentVisitor<FoContext> {
      */
     @Override
     public final void visit(Header node, FoContext data) {
-        String chapter = "" + node.getLevel(); // PageUtil.getNumber(node);
         String title = PageUtil.encode(node.getTitle());
 
         Properties properties = new Properties();
         properties.put("CHAPTER", node.getLevel() /* PageUtil.getNumber(node)*/);
-        properties.put("TITLE", new Supplier<String>() {
-            @Override
-            public String get() {
-                FoBlock inline = FoBlock.inline(data.getRoot().getBuilder());
-                if (node.getLevel() > 1)
-                    inline.setId(node.getId());
-                data.push(inline);
-                node.stream().forEach(c -> c.accept(FoDocumentRenderer.this, data));
-                data.pop();
-                return inline.build();
-            }
-        });
+        properties.put("TITLE", title);
         FoRendererStyle renderer = new FoRendererStyle(properties);
 
         PageStyle style = template.getStyle("h" + node.getLevel());
@@ -106,6 +95,7 @@ class FoDocumentRenderer implements DocumentVisitor<FoContext> {
 
             default:
                 style.items.forEach(r -> r.accept(renderer, data.getFlow()));
+                data.getFlow().last().setId(node.getId());
                 break;
         }
     }
@@ -438,10 +428,7 @@ class FoDocumentRenderer implements DocumentVisitor<FoContext> {
         data.pop();
     }
 
-    private static void createToc(Document doc, FoContext data) {
-        String id = Long.toHexString(new Random().nextLong());
-        data.addBookmark(id).setTitle("Table of Contents");
-
+    private static void createToc(String id, Document doc, FoContext data) {
         FoBlock content = FoBlock.block(data.getRoot().getBuilder())
                 .setBreakBefore("page")
                 .setSpaceBefore("0.5em", "1.0em", "2.0em")
@@ -496,38 +483,5 @@ class FoDocumentRenderer implements DocumentVisitor<FoContext> {
         block.setTextAlign("start")
                 .setTextAlignLast("justify")
                 .addNode(new FoBasicLink(id, block.getBuilder()).addNode(inline));
-    }
-
-    /**
-     * The {@link BookmarkRenderer} class.
-     */
-    private class BookmarkRenderer implements DocumentVisitor<FoContext> {
-
-        private final Stack<FoBookmark> bookmarks;
-
-        /**
-         * Constructs an instance of {@link BookmarkRenderer}.
-         */
-        public BookmarkRenderer() {
-            this.bookmarks = new Stack<>();
-        }
-
-        /**
-         * Renders a {@link Header} node.
-         *
-         * @param node
-         * @param data
-         */
-        @Override
-        public final void visit(Header node, FoContext data) {
-            while (bookmarks.size() >= node.getLevel())
-                bookmarks.pop();
-
-            FoBookmark bookmark = (node.getLevel() > 1)
-                    ? bookmarks.peek().addBookmark(node.getId())
-                    : data.addBookmark(node.getId());
-            bookmark.setTitle(PageUtil.encode(node.getTitle().trim()));
-            bookmarks.push(bookmark);
-        }
     }
 }

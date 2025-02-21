@@ -4,15 +4,13 @@
 package org.hivevm.doc.fo.writer;
 
 import org.hivevm.doc.template.PageMatch;
-import org.hivevm.util.xml.XmlBuilder;
 
 /**
  * The {@link FoPageSequenceMaster} class.
  */
-public class FoPageSequenceMaster extends FoNode {
+public class FoPageSequenceMaster extends FoAbstract {
 
-    private final String name;
-    private final FoNode master;
+    private final FoAbstract master;
 
     public enum BlankOrNot {
 
@@ -59,21 +57,16 @@ public class FoPageSequenceMaster extends FoNode {
      * Constructs an instance of {@link FoPageSequenceMaster}.
      *
      * @param name
+     * @param layout
      */
-    public FoPageSequenceMaster(String name, XmlBuilder builder) {
-        super("fo:page-sequence-master", builder);
-        this.name = name;
+    public FoPageSequenceMaster(String name, FoAbstract layout) {
+        super("page-sequence-master", layout);
         set("master-name", name);
-        this.master = FoNode.create("fo:repeatable-page-master-alternatives", builder);
-        super.addNode(this.master);
-    }
-
-    public final String getPageName() {
-        return this.name;
+        this.master = new FoAbstract("repeatable-page-master-alternatives", this);
     }
 
     public FoNode addPage(String name, PageMatch match) {
-        FoNode builder = FoNode.create("fo:conditional-page-master-reference", getBuilder());
+        FoNode builder = new FoAbstract("conditional-page-master-reference", this.master);
         builder.set("master-reference", name);
         switch (match) {
             case Odd -> builder.set("odd-or-even", OddOrEven.Odd.value);
@@ -85,17 +78,6 @@ public class FoPageSequenceMaster extends FoNode {
             case Blank -> builder.set("blank-or-not-blank", BlankOrNot.Blank.value);
             case NotBlank -> builder.set("blank-or-not-blank", BlankOrNot.NotBlank.value);
         }
-        setNode(builder);
-        return this;
-    }
-
-    /**
-     * Add a new child {@link FoNode}.
-     *
-     * @param node
-     */
-    public FoPageSequenceMaster setNode(FoNode node) {
-        this.master.addNode(node);
         return this;
     }
 }

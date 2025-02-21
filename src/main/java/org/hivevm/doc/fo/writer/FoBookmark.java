@@ -3,27 +3,25 @@
 
 package org.hivevm.doc.fo.writer;
 
-import org.hivevm.util.xml.XmlBuilder;
-
 /**
  * The {@link FoBookmark} class.
  */
-public class FoBookmark extends FoNode {
+public class FoBookmark extends FoAbstract {
 
     private final FoNode title;
 
     /**
      * Constructs an instance of {@link FoBookmark}.
      *
-     * @param name
+     * @param id
+     * @param bookmark
      */
-    public FoBookmark(String id, XmlBuilder builder) {
-        super("fo:bookmark", builder);
+    public FoBookmark(String id, FoAbstract bookmark) {
+        super("bookmark", bookmark);
         set("internal-destination", id);
         set("starting-state", "hide");
 
-        this.title = FoNode.create("fo:bookmark-title", builder);
-        addNode(this.title);
+        this.title = new FoAbstract("bookmark-title", this);
     }
 
     /**
@@ -42,8 +40,6 @@ public class FoBookmark extends FoNode {
      * @param id
      */
     public FoBookmark addBookmark(String id) {
-        FoBookmark builder = new FoBookmark(id, getBuilder());
-        addNode(builder);
-        return builder;
+        return new FoBookmark(id, this);
     }
 }

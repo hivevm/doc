@@ -3,13 +3,12 @@
 
 package org.hivevm.util.xml;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Transformer;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The {@link XmlBuilder} implements an XML based {@link NodeBuilder}. The {@link XmlBuilder} is
@@ -19,8 +18,8 @@ public class XmlBuilder extends NodeBuilder<XmlBuilder> {
 
     private final XMLStreamWriter writer;
 
-    private boolean         deferred;
-    private String          namespace;
+    private boolean deferred;
+    private String  namespace;
 
 
     private final Map<String, String> namespaces  = new HashMap<>();
@@ -136,7 +135,7 @@ public class XmlBuilder extends NodeBuilder<XmlBuilder> {
         try {
             getWriter().writeComment(comment);
         } catch (XMLStreamException e) {
-            throw new IllegalArgumentException(String.format("Failed to write comment"), e);
+            throw new IllegalArgumentException("Failed to write comment", e);
         }
         return this;
     }
@@ -190,7 +189,7 @@ public class XmlBuilder extends NodeBuilder<XmlBuilder> {
      *
      * @param name
      */
-    private final void startElement(String name, boolean isEmpty) {
+    private void startElement(String name, boolean isEmpty) {
         try {
             if (isEmpty)
                 XmlBuilder.writeEmptyElement(getWriter(), name, this.namespace);
@@ -225,7 +224,7 @@ public class XmlBuilder extends NodeBuilder<XmlBuilder> {
      * @param name
      * @param namespace
      */
-    private static final void writeElement(XMLStreamWriter writer, String name, String namespace)
+    private static void writeElement(XMLStreamWriter writer, String name, String namespace)
             throws XMLStreamException {
         if (namespace == null)
             writer.writeStartElement(name);

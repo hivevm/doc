@@ -8,7 +8,7 @@ package org.hivevm.doc.fo;
  */
 abstract class PageUtil {
 
-    private static final int[]    ARAB  = {1000, 990, 900, 500, 490, 400, 100, 90, 50, 40, 10, 9, 5, 4,
+    private static final int[] ARAB = {1000, 990, 900, 500, 490, 400, 100, 90, 50, 40, 10, 9, 5, 4,
             1};
 
     /**
