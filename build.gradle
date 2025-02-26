@@ -1,6 +1,6 @@
 plugins {
-  id 'com.gradle.plugin-publish' version '1.3.0'
-  id "org.hivevm.doc" version "1.0.0"
+  id 'com.gradle.plugin-publish' version '1.3.1'
+  id "org.hivevm.doc" version "1.1.0"
   id 'java-gradle-plugin'
   id 'maven-publish'
 }
@@ -18,13 +18,13 @@ repositories {
 }
 
 
-version = '1.1.0'
+version = '1.1.1'
 group	= 'org.hivevm'
 
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_11
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
 }
 
 
@@ -43,9 +43,19 @@ dependencies {
   // https://mvnrepository.com/artifact/org.commonmark/commonmark
   implementation 'org.commonmark:commonmark:0.24.0'
 
+  // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
+  implementation 'guru.nidi:graphviz-java:0.18.1'
+  // https://mvnrepository.com/artifact/guru.nidi/graphviz-rough
+  implementation 'guru.nidi:graphviz-rough:0.18.1'
+
+  // https://mvnrepository.com/artifact/net.sourceforge.plantuml/plantuml-mit
+    implementation 'net.sourceforge.plantuml:plantuml-mit:1.2025.0'
+
   // Use JUnit test framework
+  // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
   // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.3'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
 }
 
 
@@ -59,6 +69,10 @@ sourceSets {
   }
 }
 
+test {
+  useJUnitPlatform()
+}
+
 // Configured to publish your plugin to the plugin portal
 gradlePlugin {
   website = 'https://www.hivevm.org'
@@ -69,7 +83,7 @@ gradlePlugin {
       displayName = 'HiveVM Doc'
       description = 'HiveVM PDF document generator'
       implementationClass = 'org.hivevm.doc.GradlePlugin'
-      description = "Gradle plugin to convert markdown documents into a PDF!"
+      description = "Gradle plugin to convert Markdown & AsciiDOc into a PDF!"
       tags.set(["hivevm", "common mark", "document generator"])
     }
   }

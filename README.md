@@ -1,10 +1,11 @@
 # Markdown for PDF generation
 
-The plugin supports the creation of beautiful PDF's from markdown. Create a simple gradle project with the Gradle Wrapper and configure *build.gradle* and *settings.gradle*.
+The plugin supports the creation of beautiful PDF's from markdown. Create a simple gradle project with the Gradle
+Wrapper and configure *build.gradle* and *settings.gradle*.
 
-The *build.gradle* applies the markdown plugin with the configuration parameters.
+The *build.gradle* applies the documentation plugin with the configuration parameters.
 
-~~~
+~~~gradle
 plugins {
   id 'org.hivevm.doc' version '1.0.0'
 }
@@ -15,13 +16,15 @@ markdown {
 }
 ~~~
 
-The latest version can always be loaded from [Gradle Plugin repository](https://plugins.gradle.org/plugin/it.smartio.gradle.markdown).
+The latest version can always be loaded from [Gradle Plugin repository](https://plugins.gradle.org/plugin/org.hivevm.doc).
 
-The optional *markdown.config* parameter defines the configuration file. If the parameter is omitted an internal default template is used. The *markdown.source* parameter defines a directory of where the root markdown files are located, or it defines a single markdown file that should be converted to PDF.
+The optional *markdown.config* parameter defines the configuration file. If the parameter is omitted an internal default
+template is used. The *markdown.source* parameter defines a directory of where the root markdown files are located, or
+it defines a single markdown file that should be converted to PDF.
 
 The *settings.gradle* optionally defines the plugin repository.
 
-~~~
+~~~gradle
 pluginManagement {
   repositories {
     gradlePluginPortal()
@@ -29,29 +32,41 @@ pluginManagement {
 }
 ~~~
 
-The *markdown.config* parameter is optional and allows custom configuration of the layout of the rendered PDF. By default a standard template is applied. 
-
+The *markdown.config* parameter is optional and allows custom configuration of the layout of the rendered PDF. By
+default a standard template is applied.
 
 ## Common mark
 
-[Markdown][1] is a plain text format for writing structured documents, based on formatting conventions from email and usenet. *Markdown* is a simple way to format text that looks great on any device. It doesn’t do anything fancy like change the font size, color, or type — just the essentials, using keyboard symbols you already know.
+[Markdown][1] is a plain text format for writing structured documents, based on formatting conventions from email and
+usenet. *Markdown* is a simple way to format text that looks great on any device. It doesn’t do anything fancy like
+change the font size, color, or type — just the essentials, using keyboard symbols you already know.
 
-There are different implementations of Markdown, we use the [Common Markdown][2] is intended to be as easy-to-read and easy-to-write as is feasible.
+There are different implementations of Markdown, we use the [Common Markdown][2] is intended to be as easy-to-read and
+easy-to-write as is feasible.
 
-Readability, however, is emphasized above all else. A Markdown-formatted document should be publishable as-is, as plain text, without looking like it’s been marked up with tags or formatting instructions. While Markdown’s syntax has been influenced by several existing text-to-HTML filters — including Setext, atx, Textile, reStructuredText, Grutatext, and EtText — the single biggest source of inspiration for Markdown’s syntax is the format of plain text email.
+Readability, however, is emphasized above all else. A Markdown-formatted document should be publishable as-is, as plain
+text, without looking like it’s been marked up with tags or formatting instructions. While Markdown’s syntax has been
+influenced by several existing text-to-HTML filters — including Setext, atx, Textile, reStructuredText, Grutatext, and
+EtText — the single biggest source of inspiration for Markdown’s syntax is the format of plain text email.
 
-To this end, Markdown's syntax is comprised entirely of punctuation characters, which punctuation characters have been carefully chosen so as to look like what they mean. E.g., asterisks around a word actually look like *emphasis*. Markdown lists look like, well, lists. Even blockquotes look like quoted passages of text, assuming you’ve ever used email.
+To this end, Markdown's syntax is comprised entirely of punctuation characters, which punctuation characters have been
+carefully chosen so as to look like what they mean. E.g., asterisks around a word actually look like *emphasis*.
+Markdown lists look like, well, lists. Even blockquotes look like quoted passages of text, assuming you’ve ever used
+email.
 
 Common mark is a strongly defined, highly compatible specification of Markdown.
 
-For details look the [Common Mark Manual](https://commonmark.org/help/). There are many ways to write markdown; a simple offline editor is [Typora][3]. 
+For details look the [Common Mark Manual](https://commonmark.org/help/). There are many ways to write markdown; a simple
+offline editor is [Typora][3].
 
 [1]: https://en.wikipedia.org/wiki/Markdown "Markdown is a lightweight markup language for creating formatted text using a plain-text editor."
+
 [2]: https://spec.commonmark.org/ "A strongly defined, highly compatible specification of Markdown"
+
 [3]: https://typora.io/ "A truly minimal Mardkown editor"
 
-
 ### Headings
+
 Starting a line with a hash # and a space makes a header.
 
 The more #, the smaller the header.
@@ -60,51 +75,49 @@ The more #, the smaller the header.
 	## Chapter
 	### Sub Chapter 
 
-
-!w Remember: Each *markdown* file should be handled as independent document. Including a file into another it becomes automatically a child chapter. So use the highest heading in each file.
-
+!w Remember: Each *markdown* file should be handled as independent document. Including a file into another it becomes
+automatically a child chapter. So use the highest heading in each file.
 
 ### Paragraphs
 
 A paragraph is consecutive lines of text with one or more blank lines between them.
 
 	lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-	
 	invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-
-To organize the text thematic 3 -, _, or * can be used. On PDF this will create a page break.
-
-	lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
-	___
-	eirmod tempor
-
-
-lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
-___
-eirmod tempor
-
-
 
 ### Line Breaks
 
-For a line break, add either a backslash \ or two blank spaces at the end of the line; this is interpreted as continuation of the text. This is useful if the markdown text should be be wrapped for better reading, but logically the text remains on the same line.
+For a line break, add either a backslash \ or two blank spaces at the end of the line; this is interpreted as
+continuation of the text. This is useful if the markdown text should be be wrapped for better reading, but logically the
+text remains on the same line.
 
 	lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy··
 	eirmod tempor
+or
 
-lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy  
+	lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy\
+	eirmod tempor
+
+lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy\
 eirmod tempor
-
 
 A text with less then two spaces is interpreted as simple line break
 
 	lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
 	eirmod tempor
 
-lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
+lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
 eirmod tempor
 
+To organize the text thematic 3 sings(-), underscores(_), or stars(*) can be used. On PDF this will create a page break.
 
+	lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
+	___
+	eirmod tempor
+
+lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+___
+eirmod tempor
 
 ### Blockquotes
 
@@ -126,21 +139,20 @@ Blockquotes can be nested, and can also contain other formatting.
 >
 > Last line
 
-
-
 ### Emphasis
 
-To create bold or italic, wrap with asterisks \* or underscores \_. To avoid creating bold or italic, place a backslash in front \\\* or \\\_. For *italics* a single asteriks or underscore is used, for **bold** 2 are used.  Using 3 allows to create a ***bold and italic*** text.
+To create bold or italic, wrap with asterisks \* or underscores \_. To avoid creating bold or italic, place a backslash
+in front \\\* or \\\_. For *italics* a single asteriks or underscore is used, for **bold** 2 are used. Using 3 allows to
+create a ***bold and italic*** text.
 
-Our implementation supports an additional syntax for ____underline____ with 4 underscores  and ~~strikethrough~~ with 2 tilde.
-
+Our implementation supports an additional syntax for ____underline____ with 4 underscores and ~~strikethrough~~ with 2
+tilde.
 
 	*italic* _italic_
 	**bold** __bold__
 	***bold & italic text***
 	~~strikethrough~~
 	____underline____
-
 
 ### Lists
 
@@ -164,6 +176,29 @@ Ordered lists use numbers followed by period . or right paren ).
 2. Second
 3. Third
 
+Multilevel and combined lists
+
+    - Fruit
+     1. Apple
+     2. Pear
+    - Vegetable
+     1. Potato
+     2. Carrot
+
+- Fruit
+  1. Apple
+  2. Pear
+- Vegetable
+  1. Potato
+  2. Carrot
+
+Task List
+
+    - [x] Release candidate
+    - [ ] Product release
+
+- [x] Release candidate
+- [ ] Product release
 
 ### Links
 
@@ -173,7 +208,8 @@ Link text is enclosed by square brackets [], and for inline links, the link URL 
 
 	[text](http://a.com)
 
-Links can be realized as footnotes, defining an identifier by square brackets [] and the link URL defined below in the page.
+Links can be realized as footnotes, defining an identifier by square brackets [] and the link URL defined below in the
+page.
 
 	[][id]
 	...
@@ -185,7 +221,6 @@ or as alternative with an inline link
 	...
 	[id]: http://b.org/ "text"
 
-
 ### Images
 
 Images are almost identical to links, but an image starts with an exclamation point !.
@@ -195,7 +230,8 @@ Images are almost identical to links, but an image starts with an exclamation po
 
 ![text](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAeCAQAAADArVVKAAABJWlDQ1BJQ0MgcHJvZmlsZQAAKJGdkD1KxFAUhb/MiH9opVioRQoRLAZsTGUzKgRBIcYRHK0ySQYHkxiSDIM7cCe6mCkEwR24AQVrz4sWFqbxweV8XO49570HLTsJ03JmF9KsKly/27/sX9lzb7TZYIEdtoOwzLued0Lj+XzFMvrSMV7Nc3+e2SguQ+lUlYV5UYG1L3YmVW5Yxeptzz8UP4jtKM0i8ZN4K0ojw2bXT5Nx+ONpbrMUZxfnpq/axOWYUzxsBowZkVDRkWbqHOGwJ3UpCLinJJQmxOpNNFNxIyrl5HIg6ol0m4a89TrPU8pAHiN5mYQ7UnmaPMz/fq99nNWb1to0D4qgbrVVreEQ3h9huQ8rz7B43ZA1//ttDTNOPfPPN34BFKlQexFMbQcAAAACYktHRAD/h4/MvwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB+UDGwkqM5WPHG4AAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAACJUlEQVRIx7WWTUiUQRjHf/PuqxWWepMQiXSRLuYlECIvBuJND5UFtgoGdSkEsQ6CVIcgO5id6lCiYHSoWyhFQpB06VCelDYK6cOi2JJ2i9F9dzo4TO375bbu+8xl5vnPzPPM8zkCiwRD1CMoLSneco0p6COLimhk6RUsso/nXCdb4hfYDHCQJXBQHCEKOorCsbBQrEciYB2wLCImO29lUa1nkoxrZzk79SyDzEMq9S0Oq/7hlKNTz3eTRiKRJKl1KXJXI5I+l1Jzmv/SpW4XCmV59NwYcSbZYbiCQboN5j5TpvllfvoH+6CNKwbt4BJFeiv4mOAsCQAamWBbsU4O0yvGOC1UMU1NqaLITZVMs8CB0oXpX0rroGygwXAqiimIQQIm2U/rP+sUI9zIE7CLvdrIFZqznSYcAN7zfTMBGU7yjDqT9Gf47MmfcQ4BwvixnhcoYIH2Qpy8TIJf+qpR7vsYsYd32MTMuwQxbL5wglRhUfSU8+SAh1xG+eAfOcY3F+8nx0kWGqZwkzss0s9aAP6KXn7n1c/TzBeeB+AwQCdfQ3bMMqgdCzkucu9/Em3D2clNOu8txrQBJ7jqNeXW+0GOYR4ATzhn3hKYB5JZzVny7Ewxo9X54ELWOEWaCzrmQvsBCDP8yl8Qgi+3C4WyPeLC7F0EFnlPtpCIrZTjEKoBpOAR7fxgLoKP12GqeQzNrET2dfxEs4jzZg/9NEbw+X3N7fjyHzpu6IUgF9LcAAAAAElFTkSuQmCC)
 
-We support the non official specification to provide a size and alignment for the image. The optional parameters are defined between brackets {}.
+We support the non official specification to provide a size and alignment for the image. The optional parameters are
+defined between brackets {}.
 
 	![text](markdown.png){width=4cm align=center}
 
@@ -209,32 +245,30 @@ To create `inline code`, wrap with backticks `.
 
 	`inline code`
 
-To create a code block, either indent each line by 4 spaces, or place 3 backticks \`\`\` on a line above and below the code block.
+To create a code block, either indent each line by 4 spaces, or place 3 backticks \`\`\` on a line above and below the
+code block.
 
 	```
 	code block
 	```
 
-
-
-
 ## Extended Syntax
 
 Advanced features that build on the basic Markdown syntax.
 
-
 ### Multi-Files
 
-The *Markdown* parser supports organizing the documentation in multiple files. Each file can be included by a simple link with the relative path. The documentation generator will merge all files into a single *markdown* source. Each file should be designed as independent file, the generator takes care about building the correct structure of chapters.
+The *Markdown* parser supports organizing the documentation in multiple files. Each file can be included by a simple
+link with the relative path. The documentation generator will merge all files into a single *markdown* source. Each file
+should be designed as independent file, the generator takes care about building the correct structure of chapters.
 
 	[Title](local_path/to_file.md)
 
 !w An included file will be handled as sub-chapter of the current chapter.
 
-
 ### Comments
 
-Most Markdown implementatios support comments. 
+Most Markdown implementatios support comments.
 
 	[TEXT]: # (Some comment)
 
@@ -242,42 +276,45 @@ Most Markdown implementatios support comments.
 
 ### Internal Links
 
-Markdown allows to link to internal headers using as link the header name in lower case, prefixed with a hash, and replacing all spaces with an sign (-).
+Markdown allows to link to internal headers using as link the header name in lower case, prefixed with a hash, and
+replacing all spaces with an sign (-).
 
 	[text](#header-of-document)
 	
 	### Header of Document
 
-The renderer changes to the local references automatically, that you can directly use the header. Nevertheless you should avoid headers with special characters.
+The renderer changes to the local references automatically, that you can directly use the header. Nevertheless you
+should avoid headers with special characters.
 
 	[text](#Header of Document)
 	
 	### Header of Document
 
-
-	
 ### Tables
 
-To add a table, use three or more hyphens (---) to create each column’s header, and use pipes (|) to separate each column. You can optionally add pipes on either end of the table. We support the extended syntax to align the columns. By default the columns are left aligned, using colons before or after the hypens it is possible to define a left (:---), center (:---:) or right alignment (---:)
+To add a table, use three or more hyphens (---) to create each column’s header, and use pipes (|) to separate each
+column. You can optionally add pipes on either end of the table. We support the extended syntax to align the columns. By
+default the columns are left aligned, using colons before or after the hypens it is possible to define a left (:---),
+center (:---:) or right alignment (---:)
 
 	| Auto | Center Alignment | Left Alignment | Right Alignment |
 	| ---- | :--------------: | :------------- | --------------: |
 	| Auto | Center | Left | Right |
-
 
 | Auto | Center Alignment | Left Alignment | Right Alignment |
 | ---- | :--------------: | :------------- | --------------: |
 | Auto | Center | Left | Right |
 
 
-Sizing of of the single table columns is not supported by markdown. We extended the tables and introduced the definition of the column width, using the number of hyphens (---) in the header separator. The number of hyphens in a single column relative to the sum of all hyphens in all columns define the relative width to the whole table.
-
-
+Sizing of of the single table columns is not supported by markdown. We extended the tables and introduced the definition
+of the column width, using the number of hyphens (---) in the header separator. The number of hyphens in a single column
+relative to the sum of all hyphens in all columns define the relative width to the whole table.
 
 ### Alerts
 
-
-Alerts are an extension to provide customizable blockquotes. 4 different kind of alerts are supported, that are rendered with a background and highlight color. The alert message have to start with **!** at the beginning of the line with a letter defining the alert message.
+Alerts are an extension to provide customizable blockquotes. 4 different kind of alerts are supported, that are rendered
+with a background and highlight color. The alert message have to start with **!** at the beginning of the line with a
+letter defining the alert message.
 
 	!n Note
 
@@ -295,20 +332,20 @@ Alerts are an extension to provide customizable blockquotes. 4 different kind of
 
 !e Error
 
-
-Sometimes multiline alerts are need. Multiline alert starts with double **!!**. The message will be terminated with a single line of **!!**.
+Sometimes multiline alerts are need. Multiline alert starts with double **!!**. The message will be terminated with a
+single line of **!!**.
 
 	!!w Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
 	
 	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
 	!!
 
-!!w Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+!!w Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+magna aliquyam erat, sed diam voluptua.
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore
+magna aliquyam erat, sed diam voluptua.
 !!
-
-
 
 ### Symbols
 
@@ -322,8 +359,6 @@ As font the [Material Icons Font][3] is used.
 
 
 [3]: https://material.io/resources/icons/ "Material Icons Font"
-
-
 
 ### Formatted Code
 
@@ -341,13 +376,68 @@ name   = CAFM
 uri    = http://localhost5000/
 ~~~
 
+### Extensions
 
-The *language* attribute allows to define the formatting for a specific language. *ini*, *xml*, *json*, *java* and *cpp* are supported. Support for *rest* is missing. 
+Uml Diagrams with PlantUML
 
+~~~uml
+hide footbox
+actor Caller
+box "MultiAsyncExecutableTask"
+    participant "Task1" as T1
+    participant "Task2" as T2
+    participant "Task3" as T3
+end box
+participant REST
+
+Caller -> T1 : execute()
+activate T1
+
+T1 -> REST : GET
+
+T1 -> T2 : execute()
+deactivate T1
+activate T2
+
+T2 -> REST : GET
+
+T2 -> T3 : execute()
+deactivate T2
+activate T3
+
+T3 -> REST :  GET
+
+Caller <-- T3 : return
+deactivate T3
+
+...500 ms...
+
+T1 <-- REST : 200 OK
+activate T1
+
+T1 --> T2 : Result.ok()
+deactivate T1
+
+T2 <-- REST : 200 OK
+activate T2
+
+T2 --> T3 : Result.ok()
+deactivate T2
+
+T3 <-- REST : 200 OK
+activate T3
+
+Caller <-- T3 : Result.ok()
+deactivate T3
+~~~
+
+The *language* attribute allows to define the formatting for a specific language. *ini*, *xml*, *json*, *java* and *cpp*
+are supported. Support for *rest* is missing.
 
 ## Custom rendering
 
-The *markdown.config* parameter allows to define a custom configuration for layouting. The implementation is still experimental; for this example without explanation will be provided yet.
+The *markdown.config* parameter allows to define a custom configuration for layouting. The implementation is still
+experimental; for this example without explanation will be provided yet.
 
 ~~~xml
 <?xml version="1.0" encoding="UTF-8"?>

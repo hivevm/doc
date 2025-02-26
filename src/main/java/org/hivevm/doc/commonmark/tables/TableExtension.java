@@ -1,4 +1,4 @@
-// Copyright 2024 HiveVM.org. All rights reserved.
+// Copyright 2025 HiveVM.org. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
 package org.hivevm.doc.commonmark.tables;
@@ -15,18 +15,19 @@ import org.commonmark.renderer.html.HtmlRenderer;
  * {@link Table} blocks. </p>
  *
  * @see <a href="https://github.github.com/gfm/#tables-extension-">Tables (extension) in GitHub
- *      Flavored Markdown Spec</a>
+ * Flavored Markdown Spec</a>
  */
 public class TableExtension implements Parser.ParserExtension {
 
-  private TableExtension() {}
+    private TableExtension() {
+    }
 
-  public static Extension create() {
-    return new TableExtension();
-  }
+    public static Extension create() {
+        return new TableExtension();
+    }
 
-  @Override
-  public void extend(Parser.Builder parserBuilder) {
-    parserBuilder.customBlockParserFactory(new TableParser.Factory());
-  }
+    @Override
+    public void extend(Parser.Builder parserBuilder) {
+        parserBuilder.customBlockParserFactory(new TableParser.Factory());
+    }
 }
