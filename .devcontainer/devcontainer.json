@@ -1,0 +1,13 @@
+{
+  "name": "HiveVM Doc",
+  "image": "eclipse-temurin:21",
+  "onCreateCommand": "apt update && apt install git libxrender1 libxtst6 libxi6 -y",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "github.vscode-github-actions"
+      ]
+    }
+  }
+}

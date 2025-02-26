@@ -1,8 +1,8 @@
 plugins {
-  id 'com.gradle.plugin-publish' version '1.3.0'
-  id "org.hivevm.doc" version "1.0.0"
-  id 'java-gradle-plugin'
-  id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '1.3.1'
+    id 'org.hivevm.doc' version '1.1.2'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
 }
 
 
@@ -13,70 +13,102 @@ apply plugin: 'java-gradle-plugin'
 
 
 repositories {
-  mavenLocal()
-  mavenCentral()
+    mavenLocal()
+    mavenCentral()
 }
 
 
-version = '1.1.0'
-group	= 'org.hivevm'
+version = '1.1.2'
+group = 'org.hivevm'
 
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 
 allprojects {
-  tasks.withType(Javadoc).all {
-    enabled = false 
-  }
+    tasks.withType(Javadoc).all {
+        enabled = false
+    }
 }
 
 
 dependencies {
-  implementation gradleApi()
+    implementation gradleApi()
 
-  // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
-  implementation 'org.apache.xmlgraphics:fop:2.10'
-  // https://mvnrepository.com/artifact/org.commonmark/commonmark
-  implementation 'org.commonmark:commonmark:0.24.0'
+    // https://mvnrepository.com/artifact/org.jspecify/jspecify
+    implementation("org.jspecify:jspecify:1.0.0")
 
-  // Use JUnit test framework
-  // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-  testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.3'
+    // https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop
+    implementation 'org.apache.xmlgraphics:fop:2.11'
+    // https://mvnrepository.com/artifact/org.commonmark/commonmark
+    implementation 'org.commonmark:commonmark:0.25.1'
+    // https://mvnrepository.com/artifact/org.commonmark/commonmark-ext-task-list-items
+    implementation 'org.commonmark:commonmark-ext-task-list-items:0.25.1'
+
+    // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
+    implementation 'guru.nidi:graphviz-java:0.18.1'
+    // https://mvnrepository.com/artifact/guru.nidi/graphviz-rough
+    implementation 'guru.nidi:graphviz-rough:0.18.1'
+
+    // https://mvnrepository.com/artifact/com.eclipsesource.j2v8/j2v8_linux_x86_64
+    runtimeOnly("com.eclipsesource.j2v8:j2v8_linux_x86_64:4.8.0")
+
+    // https://mvnrepository.com/artifact/net.sourceforge.plantuml/plantuml-mit
+    implementation 'net.sourceforge.plantuml:plantuml-mit:1.2025.4'
+
+    // Use JUnit test framework
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.13.4'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.13.4'
+    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner
+    testImplementation("org.junit.platform:junit-platform-runner:1.13.4")
 }
 
 
 sourceSets {
-  main {
-    java {
-      srcDirs += 'src/main/gradle'
+    main {
+        java {
+            srcDirs += 'src/main/gradle'
+        }
+        resources {
+        }
     }
-    resources {
-    }
-  }
 }
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'HiveVM Document'
+        attributes 'Implementation-Version': project.version
+    }
+}
+
 
 // Configured to publish your plugin to the plugin portal
 gradlePlugin {
-  website = 'https://www.hivevm.org'
-  vcsUrl  = 'https://github.com/hivevm/cc.git'
-  plugins {
-    create("gradle") {
-      id = 'org.hivevm.doc'
-      displayName = 'HiveVM Doc'
-      description = 'HiveVM PDF document generator'
-      implementationClass = 'org.hivevm.doc.GradlePlugin'
-      description = "Gradle plugin to convert markdown documents into a PDF!"
-      tags.set(["hivevm", "common mark", "document generator"])
+    website = 'https://www.hivevm.org'
+    vcsUrl = 'https://github.com/hivevm/doc.git'
+    plugins {
+        create("gradle") {
+            id = 'org.hivevm.doc'
+            displayName = 'HiveVM Doc'
+            description = 'HiveVM PDF document generator'
+            implementationClass = 'org.hivevm.doc.GradlePlugin'
+            description = "Gradle plugin to convert Markdown & AsciiDoc into a PDF!"
+            tags.set(["hivevm", "common mark", "document generator"])
+        }
     }
-  }
 }
 
 
 markdown {
-  template = ':DEFAULT:'
-  source = '.'
+    template = ':DEFAULT:'
+    source = '.'
 }

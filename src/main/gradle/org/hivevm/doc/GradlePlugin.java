@@ -9,14 +9,14 @@ import org.gradle.api.plugins.ExtensionContainer;
 
 public class GradlePlugin implements Plugin<Project> {
 
-  private static final String CONFIG = "markdown";
+    private static final String CONFIG = "markdown";
 
-  @Override
-  public void apply(Project project) {
-    ExtensionContainer extension = project.getExtensions();
-    extension.create(GradlePlugin.CONFIG, GradleConfig.class);
+    @Override
+    public void apply(Project project) {
+        ExtensionContainer extension = project.getExtensions();
+        extension.create(GradlePlugin.CONFIG, GradleConfig.class);
 
-    project.getTasks().register("generatePdf", PdfTask.class);
-    project.getTasks().register("mergeMarkdown", MergeTask.class);
-  }
+        project.getTasks().register("generatePdf", PdfTask.class);
+        project.getTasks().register("mergeMarkdown", MergeTask.class);
+    }
 }

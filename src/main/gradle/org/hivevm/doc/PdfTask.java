@@ -3,6 +3,14 @@
 
 package org.hivevm.doc;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+import javax.inject.Inject;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.Property;
@@ -11,94 +19,111 @@ import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
-
-import java.io.File;
-import java.util.Properties;
-
-import javax.inject.Inject;
+import org.hivevm.doc.adoc.AsciiDocRequestHandler;
+import org.hivevm.doc.fo.FoRequestHandler;
+import org.hivevm.doc.fo.pdf.PdfRenderer;
+import org.hivevm.doc.md.MarkdownRequestHandler;
+import org.hivevm.doc.template.Template;
+import org.hivevm.util.ReplacerRequestHandler;
+import org.hivevm.util.lambda.RequestStreamBuilder;
+import org.hivevm.util.lambda.RequestStreamHandler;
 
 /**
  * The {@link PdfTask} class.
  */
 public abstract class PdfTask extends DefaultTask {
 
-  @Inject
-  public PdfTask() {
-    setGroup("HiveVM");
-    setDescription("Creates PDF's from Markdown");
-  }
-
-  @InputDirectory
-  @Optional
-  @Option(option = "source", description = "The input folder containing markdown files.")
-  public abstract DirectoryProperty getSource();
-
-  @Input
-  @Optional
-  @Option(option = "template", description = "The template.")
-  public abstract Property<String> getTemplate();
-
-  @TaskAction
-  public void process() {
-    GradleConfig config = getProject().getExtensions().findByType(GradleConfig.class);
-    File source = getFile((config == null) ? null : config.source);
-
-    String template = getTemplate().getOrElse((config == null) ? ":DEFAULT:" : config.template);
-    if (!template.isEmpty() && !template.startsWith(":") && !template.startsWith("/")) {
-      template = new File(getProject().getRootDir(), template).getAbsolutePath();
+    @Inject
+    public PdfTask() {
+        setGroup("HiveVM");
+        setDescription("Creates PDF's from Markdown");
     }
 
-    DocumentBuilder builder = new DocumentBuilder(getProject().getRootDir());
-    builder.setConfig(template);
-    builder.setSource(getSource().getAsFile().getOrElse(source).getAbsolutePath());
-    builder.setTarget(getProject().getBuildDir());
+    @InputDirectory
+    @Optional
+    @Option(option = "source", description = "The input folder containing markdown files.")
+    public abstract DirectoryProperty getSource();
 
-    builder.onInfo(m -> getLogger().info(m));
-    builder.onError(t -> getLogger().error("An Error occured!", t));
-    builder.addProperties(System.getProperties());
-    getProject().getProperties().entrySet().stream().filter(e -> e.getValue() != null)
-        .forEach(e -> builder.addProperty(e.getKey(), e.getValue()));
+    @Input
+    @Optional
+    @Option(option = "template", description = "The template.")
+    public abstract Property<String> getTemplate();
 
-    // Adding GIT informations to the filename
-    builder.setSuffix(PdfTask.getFileSuffix(builder.getProperties()));
+    @TaskAction
+    public void process() {
+        var workingDir = getProject().getProjectDir().getAbsoluteFile();
+        var config = getProject().getExtensions().findByType(GradleConfig.class);
+        var source = getFile((config == null) ? null : config.source, getProject().getProjectDir());
 
-    builder.build();
-  }
+        String templatePath = getTemplate().getOrElse(
+            (config == null || config.template == null) ? ":default.ui.xml" : config.template);
+        if (templatePath.startsWith(":") && templatePath.endsWith(":")) {
+            templatePath = String.format("%s.ui.xml",
+                templatePath.substring(0, templatePath.length() - 1).toLowerCase());
+        }
+        else if (!templatePath.isEmpty() && !templatePath.startsWith(":")
+            && !templatePath.startsWith("/")) {
+            var file = new File(workingDir, templatePath);
+            workingDir = file.getParentFile();
+            templatePath = file.getName();
+        }
 
-  protected File getFile(String pathname) {
-    if (pathname == null) {
-      return null;
+        Map<String, String> props = new HashMap<>();
+        System.getProperties().entrySet().stream().filter(e -> e.getValue() != null)
+            .forEach(e -> props.put((String) e.getKey(), (String) e.getValue()));
+
+        try {
+            Template template = Template.parse(templatePath, workingDir);
+
+            RequestStreamBuilder builder = new RequestStreamBuilder();
+            builder.append(new MarkdownRequestHandler());
+            builder.append(new ReplacerRequestHandler(props));
+            builder.append(new FoRequestHandler(template, false));
+            builder.append(new PdfRenderer(template));
+            RequestStreamHandler mdHandler = builder.build();
+
+            builder = new RequestStreamBuilder();
+            builder.append(new AsciiDocRequestHandler());
+            builder.append(new ReplacerRequestHandler(props));
+            builder.append(new FoRequestHandler(template, false));
+            builder.append(new PdfRenderer(template));
+            RequestStreamHandler asciiHandler = builder.build();
+
+            File folder = source.isDirectory() ? source : source.getParentFile();
+            String file = source.isDirectory() ? "*.{md,adoc}" : source.getName();
+            String text = file.replace(".", "\\.").replace("{", "(").replace("}", ")")
+                .replace(",", "|")
+                .replace("*", ".+");
+            Pattern pattern = Pattern.compile(text);
+
+            var targetDir = getProject().getBuildDir();
+            if (!targetDir.exists())
+                targetDir.mkdirs();
+
+            for (File input : folder.listFiles(f -> pattern.matcher(f.getName()).find())) {
+                var handler = input.getName().endsWith(".md") ? mdHandler : asciiHandler;
+                var output = new File(targetDir, input.getName() + ".pdf");
+                try (FileOutputStream ostream = new FileOutputStream(output);
+                    InputStream istream = new FileInputStream(input)) {
+                    handler.handleRequest(istream, ostream, input.getParentFile());
+                }
+            }
+        } catch (Exception e) {
+            getLogger().error("Failed to generate a PDF", e);
+        }
     }
 
-    File file = new File(pathname);
-    if (file.isAbsolute()) {
-      return file;
+    protected File getFile(String pathname, File folder) {
+        if (pathname == null) {
+            return folder;
+        }
+
+        File file = new File(pathname);
+        if (file.isAbsolute()) {
+            return file;
+        }
+
+        File projectDir = getProject().getProjectDir();
+        return new File(projectDir, pathname);
     }
-
-    File projectDir = getProject().getProjectDir();
-    return new File(projectDir, pathname);
-  }
-
-
-  /**
-   * Gets the file-suffix from the {@link Properties}.
-   *
-   * @param properties
-   */
-  private static String getFileSuffix(Properties properties) {
-    if (properties.containsKey("GIT_VERSION")) {
-      String suffix = "-" + properties.get("GIT_VERSION");
-      if (properties.containsKey("BUILD_NUMBER")) {
-        suffix += "+" + properties.get("BUILD_NUMBER");
-      }
-      return suffix;
-    } else if (properties.containsKey("git.version")) {
-      String suffix = "-" + properties.get("git.version");
-      if (properties.containsKey("git.buildnumber")) {
-        suffix += "+" + properties.get("git.buildnumber");
-      }
-      return suffix;
-    }
-    return "";
-  }
 }

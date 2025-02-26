@@ -1,4 +1,4 @@
-// Copyright 2024 HiveVM.org. All rights reserved.
+// Copyright 2025 HiveVM.org. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
 package org.hivevm.util;
@@ -14,18 +14,18 @@ import java.util.regex.Pattern;
 public class Replacer {
 
   // Environment variables: {{ENVIRONMENT_VARIABLE;FORMATTER}}
-  private static final String  PATTERN  = "\\{\\{([^};]+)(?:;([^}]+))?}}";
-  private static final Pattern TEMPLATE = Pattern.compile(Replacer.PATTERN, Pattern.CASE_INSENSITIVE);
+  private static final String       PATTERN  = "\\{\\{([^};]+)(?:;([^}]+))?}}";
+  private static final Pattern      TEMPLATE = Pattern.compile(Replacer.PATTERN, Pattern.CASE_INSENSITIVE);
 
 
-  private final Map<String, String>  properties;
+  private final Map<String, String> properties;
 
   /**
    * Constructs an instance of {@link Replacer}.
    *
    * @param properties
    */
-  public Replacer(Map<String, String>  properties) {
+  public Replacer(Map<String, String> properties) {
     this.properties = properties;
   }
 
@@ -66,7 +66,7 @@ public class Replacer {
     while (matcher.find()) {
       String result = function.apply(matcher);
       if (result != null) {
-        content.append(text.substring(offset, matcher.start()));
+        content.append(text, offset, matcher.start());
         content.append(result);
         offset = matcher.end();
       }
