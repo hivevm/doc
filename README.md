@@ -429,6 +429,148 @@ education: |
   BSc in the Internet of Things
 ~~~
 
+~~~json
+{
+  "squadName": "Super hero squad",
+  "homeTown": "Metro City",
+  "formed": 2016,
+  "secretBase": "Super tower",
+  "active": true,
+  "members": [
+    {
+      "name": "Molecule Man",
+      "age": 29,
+      "secretIdentity": "Dan Jukes",
+      "powers": [
+        "Radiation resistance",
+        "Turning tiny",
+        "Radiation blast"
+      ]
+    },
+    {
+      "name": "Madame Uppercut",
+      "age": 39,
+      "secretIdentity": "Jane Wilson",
+      "powers": [
+        "Million tonne punch",
+        "Damage resistance",
+        "Superhuman reflexes"
+      ]
+    },
+    {
+      "name": "Eternal Flame",
+      "age": 1000000,
+      "secretIdentity": "Unknown",
+      "powers": [
+        "Immortality",
+        "Heat Immunity",
+        "Inferno",
+        "Teleportation",
+        "Interdimensional travel"
+      ]
+    }
+  ],
+  "from": "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON"
+}
+~~~
+
+~~~java
+import java.awt.Rectangle;
+
+public class ObjectVarsAsParameters {
+    public static void main(String[] args) {
+        go();
+    }
+
+    public static void go() {
+        Rectangle r1 = new Rectangle(0, 0, 5, 5);
+        System.out.println("In method go. r1 " + r1 + "\n");
+        // could have been
+        //System.out.prinltn("r1" + r1.toString());
+        r1.setSize(10, 15);
+        System.out.println("In method go. r1 " + r1 + "\n");
+        alterPointee(r1);
+        System.out.println("In method go. r1 " + r1 + "\n");
+
+        alterPointer(r1);
+        System.out.println("In method go. r1 " + r1 + "\n");
+    }
+
+    public static void alterPointee(Rectangle r)
+    {
+        System.out.println("In method alterPointee. r " + r + "\n");
+        r.setSize(20, 30);
+        System.out.println("In method alterPointee. r " + r + "\n");
+    }
+
+    public static void alterPointer(Rectangle r)
+    {
+        System.out.println("In method alterPointer. r " + r + "\n");
+        r = new Rectangle(5, 10, 30, 35);
+        System.out.println("In method alterPointer. r " + r + "\n");
+    }
+}
+~~~
+
+~~~cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+
+   int num_int;
+   double num_double = 9.99;
+
+   // implicit conversion
+   // assigning a double value to an int variable
+   num_int = num_double;
+
+   cout << "num_int = " << num_int << endl;
+   cout << "num_double = " << num_double << endl;
+
+   return 0;
+}
+~~~
+
+~~~rust
+fn main() {
+    // We can use this function here, and define it somewhere later
+    fizzbuzz_to(100);
+}
+
+// Function that returns a boolean value
+fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
+    // Corner case, early return
+    if rhs == 0 {
+        return false;
+    }
+
+    // This is an expression, the `return` keyword is not necessary here
+    lhs % rhs == 0
+}
+
+// Functions that "don't" return a value, actually return the unit type `()`
+fn fizzbuzz(n: u32) -> () {
+    if is_divisible_by(n, 15) {
+        println!("fizzbuzz");
+    } else if is_divisible_by(n, 3) {
+        println!("fizz");
+    } else if is_divisible_by(n, 5) {
+        println!("buzz");
+    } else {
+        println!("{}", n);
+    }
+}
+
+// When a function returns `()`, the return type can be omitted from the
+// signature
+fn fizzbuzz_to(n: u32) {
+    for n in 1..=n {
+        fizzbuzz(n);
+    }
+}
+~~~
+
 ### Extensions
 
 Uml Diagrams with PlantUML
@@ -593,7 +735,7 @@ Foo -> Foo6 : To collections
 Foo -> Foo7: To queue
 ~~~
 
-~~~json
+~~~jsongraph
 <style>
 .h1 {
   BackGroundColor
@@ -641,7 +783,7 @@ Foo -> Foo7: To queue
 }
 ~~~
 
-~~~json
+~~~jsongraph
 {
   "firstName": "John",
   "lastName": "Smith",

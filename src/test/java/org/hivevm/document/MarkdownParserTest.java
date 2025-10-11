@@ -5,12 +5,9 @@ package org.hivevm.document;
 
 import org.apache.fop.apps.FOPException;
 import org.hivevm.commonmark.Markdown;
-import org.hivevm.doc.api.DocumentParser;
 import org.hivevm.doc.fo.pdf.PdfBuilder;
 import org.hivevm.doc.template.Template;
 import org.hivevm.document.fo.FoRenderer;
-import org.hivevm.document.fo_legacy.FoDocumentRenderer;
-import org.hivevm.document.fo_legacy.FoWriter;
 import org.hivevm.util.StreamHandler;
 import org.hivevm.util.StreamPipeline;
 import org.hivevm.util.xml.StAX;
@@ -66,35 +63,6 @@ public class MarkdownParserTest {
                     }
                 })
                 // Generates a PDF file from the FO document.
-                .addHandler(getPdfHandler(template));
-
-        try (var in = new FileInputStream(mdFile);
-             var out = new FileOutputStream(pdfFile);
-             var pipeline = builder.build()) {
-            pipeline.handleRequest(in, out);
-        }
-    }
-
-    @Test
-    public void testLegacyPDF() throws Exception {
-        var template = Template.getDefault();
-        var mdFile = new File(CONTEXT.workingDir(), NAME + ".md");
-        var foFile = new File(CONTEXT.target(), NAME + ".fo");
-        var pdfFile = new File(CONTEXT.target(), NAME + ".pdf");
-
-        var builder = StreamPipeline.builder()
-                // Generates a FO document from the Markdown content.
-                .addHandler((input, output) -> {
-                    var document = DocumentParser.parse(input);
-                    try (var writer = new FoWriter(output, template)) {
-                        writer.renderLayout();
-                        document.accept(new FoDocumentRenderer(), writer);
-                    } catch (XMLStreamException e) {
-                        throw new IOException(e);
-                    }
-                })
-                // Generates a PDF file from the FO document.
-//                .addHandler(getFileHandler(template));
                 .addHandler(getPdfHandler(template));
 
         try (var in = new FileInputStream(mdFile);

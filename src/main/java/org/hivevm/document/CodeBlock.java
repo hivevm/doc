@@ -10,16 +10,14 @@ import guru.nidi.graphviz.parse.Parser;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
-import org.hivevm.document.code.IniGenerator;
-import org.hivevm.document.code.YamlGenerator;
 import org.hivevm.railroad.RailroadHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class CodeBlock implements DocumentElement {
 
@@ -29,7 +27,7 @@ public class CodeBlock implements DocumentElement {
     private final boolean showLineNumbers;
 
     private CodeBlock(Builder builder) {
-        this(builder, Arrays.stream(builder.lines).map(Line::new).toList());
+        this(builder, Stream.of(builder.code.split("\\n")).map(Line::new).toList());
     }
 
     private CodeBlock(Builder builder, List<Line> lines) {
@@ -72,14 +70,12 @@ public class CodeBlock implements DocumentElement {
 
         private String id;
         private String code;
-        private String[] lines;
         private String language = "";
         private boolean showLineNumbers = false;
 
         public Builder(String id, String code) {
             this.id = id;
             this.code = code;
-            this.lines = code.split("\\n");
         }
 
         public Builder language(String language) {
@@ -95,7 +91,21 @@ public class CodeBlock implements DocumentElement {
         public DocumentElement build() {
             var lang = language != null ? language : "";
             return switch (lang) {
-                case "uml", "json", "ebnf", "regex" -> {
+                case "jsongraph" -> {
+                    Graphviz.useEngine(new GraphvizV8Engine());
+
+                    var uml = "@start" + "json" + "\n!pragma layout smetana\n" + code + "\n@end\" + type + \"\n";
+                    var reader = new SourceStringReader(uml);
+                    try (var ostream = new ByteArrayOutputStream()) {
+                        reader.outputImage(ostream, new FileFormatOption(FileFormat.SVG));
+                        var bytes = ostream.toByteArray();
+                        var base64 = Base64.getEncoder().encodeToString(bytes);
+                        yield new Image(id, "data:image/svg+xml;base64," + base64);
+                    } catch (IOException e) {
+                    }
+                    yield new CodeBlock(this);
+                }
+                case "uml", "ebnf", "regex" -> {
                     Graphviz.useEngine(new GraphvizV8Engine());
 
                     var uml = "@start" + language + "\n!pragma layout smetana\n" + code + "\n@end\" + type + \"\n";
@@ -132,20 +142,19 @@ public class CodeBlock implements DocumentElement {
                         var base64 = Base64.getEncoder().encodeToString(bytes);
                         yield new Image(id, "data:image/svg+xml;base64," + base64);
                     } catch (IOException e) {
+                        e.printStackTrace();
                     }
                     yield new CodeBlock(this);
                 }
-                case "ini" -> {
-                    var rows = new ArrayList<Line>();
-                    var generator = new IniGenerator();
-                    generator.generate(lines, rows);
-                    yield new CodeBlock(this, rows);
-                }
-                case "yaml" -> {
-                    var rows = new ArrayList<Line>();
-                    var generator = new YamlGenerator();
-                    generator.generate(lines, rows);
-                    yield new CodeBlock(this, rows);
+                case "ini", "yaml", "xml", "json", "java", "cpp", "rust" -> {
+                    try {
+                        var rows = new ArrayList<Line>();
+                        TextMateGenerator.generate(lang, code, rows);
+                        yield new CodeBlock(this, rows);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    yield new CodeBlock(this);
                 }
                 default -> new CodeBlock(this);
             };
