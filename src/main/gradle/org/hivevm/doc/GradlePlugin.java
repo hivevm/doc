@@ -18,5 +18,8 @@ public class GradlePlugin implements Plugin<Project> {
 
         project.getTasks().register("generatePdf", PdfTask.class);
         project.getTasks().register("mergeMarkdown", MergeTask.class);
+
+        project.getTasks().register("text2svg", Text2SvgTask.class);
+        project.getTasks().register("text2code", Text2CodeTask.class);
     }
 }

@@ -3,16 +3,17 @@
 
 package org.hivevm.doc;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Arrays;
-import java.util.stream.Stream;
 import org.hivevm.doc.fo.pdf.PdfRenderer;
 import org.hivevm.doc.template.Template;
 import org.hivevm.document.TestContext;
 import org.hivevm.util.DataUri;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * The {@link FoTest} class.

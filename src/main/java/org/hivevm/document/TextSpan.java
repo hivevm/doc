@@ -6,7 +6,8 @@ package org.hivevm.document;
 public class TextSpan {
 
     private final String text;
-    private final String color;
+    private final String scope;
+    private final TextStyle style;
     private final boolean end;
     private final boolean code;
     private final boolean bold;
@@ -31,7 +32,8 @@ public class TextSpan {
         this.end = builder.end;
         this.code = builder.code;
         this.bold = builder.bold;
-        this.color = builder.color;
+        this.scope = builder.scope;
+        this.style = builder.style;
         this.italic = builder.italic;
         this.overline = builder.overline;
         this.underline = builder.underline;
@@ -54,8 +56,12 @@ public class TextSpan {
         return text;
     }
 
-    public String color() {
-        return color;
+    public String scope() {
+        return scope;
+    }
+
+    public TextStyle style() {
+        return style;
     }
 
     public boolean isEnd() {
@@ -133,7 +139,8 @@ public class TextSpan {
     public static class Builder {
 
         private String text;
-        private String color;
+        private String scope;
+        private TextStyle style;
         private boolean end = false;
         private boolean code = false;
         private boolean bold = false;
@@ -196,8 +203,13 @@ public class TextSpan {
             return this;
         }
 
-        public Builder color(String color) {
-            this.color = color;
+        public Builder scope(String scope) {
+            this.scope = scope;
+            return this;
+        }
+
+        public Builder style(TextStyle style) {
+            this.style = style;
             return this;
         }
 

@@ -21,11 +21,10 @@ package org.eclipse.tm4e.core.internal.oniguruma;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.eclipse.tm4e.core.TMException;
-import org.gradle.internal.impldep.com.google.api.client.util.Objects;
 import org.jspecify.annotations.Nullable;
 import org.eclipse.tm4e.core.internal.utils.StringUtils;
 import org.jcodings.specific.NonStrictUTF8Encoding;
@@ -240,7 +239,7 @@ public final class OnigRegExp {
 		}
 
 		final var lastSearchResult0 = this.lastSearchResult;
-		if (Objects.equal(lastSearchString, str)
+		if (Objects.equals(lastSearchString, str)
 				&& lastSearchPosition <= startPosition
 				&& (lastSearchResult0 == null || lastSearchResult0.locationAt(0) >= startPosition)) {
 			return lastSearchResult0;

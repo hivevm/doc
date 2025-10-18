@@ -110,8 +110,8 @@ class FlowRenderer {
                 inline.setFontWeight("bold");
             if (text.isItalic())
                 inline.setFontStyle("italic");
-            if (text.color() != null)
-                inline.setColor(text.color());
+            if (text.style() != null)
+                inline.setColor(text.style().color());
 
             var decorations = new HashSet<String>();
             if (text.isOverline())

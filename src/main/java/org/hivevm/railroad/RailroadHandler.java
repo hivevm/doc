@@ -12,6 +12,7 @@ import org.hivevm.railroad.svg.SvgDiagram;
 import org.hivevm.railroad.svg.SvgLayout;
 import org.hivevm.util.RequestHandler;
 
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 /**

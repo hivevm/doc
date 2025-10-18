@@ -68,6 +68,10 @@ public final class Theme {
 		this._defaults = defaults;
 	}
 
+    public ThemeTrieElement getRoot() {
+        return _root;
+    }
+
 	public List<String> getColorMap() {
 		return this._colorMap.getColorMap();
 	}

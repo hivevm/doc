@@ -3,25 +3,49 @@
 
 package org.hivevm.document.code;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Base64;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.TestFactory;
+
+import java.io.*;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * The {@link DiagramTest} class.
  */
 public abstract class DiagramTest {
 
-    protected final String toSVG(InputStream istream) throws IOException {
-        try (var ostream = new ByteArrayOutputStream()) {
-            handleRequest(istream, ostream, null);
-            var bytes = ostream.toByteArray();
-            var base64 = Base64.getEncoder().encodeToString(bytes);
-            return "data:image/svg+xml;base64," + base64;
-        }
+    private final String type;
+    private final StreamHandler handler;
+
+    protected DiagramTest(String type, StreamHandler handler) {
+        this.type = type;
+        this.handler = handler;
     }
 
-    protected abstract void handleRequest(InputStream istream, OutputStream ostream, String type) throws IOException;
+    protected final Stream<DynamicTest> dynamicTests(String type) {
+        var source = new File("./doc");
+        var filetype = "." + type;
+        return Arrays.stream(source.listFiles(path -> path.getName().endsWith(filetype)))
+                .map(file -> DynamicTest.dynamicTest(file.getName(), () -> {
+                            var name = file.getName();
+                            var filename = name.substring(0, name.length() - filetype.length());
+                            var target = new File(file.getParent(), filename + ".svg");
+                            try (var request = new FileInputStream(file);
+                                 var response = new FileOutputStream(target)) {
+                                handler.handleRequest(request, response);
+                            }
+                        }
+                ));
+    }
+
+    @TestFactory
+    protected Stream<DynamicTest> dynamicTests() {
+        return dynamicTests(type);
+    }
+
+    @FunctionalInterface
+    protected interface StreamHandler {
+        void handleRequest(InputStream inputStream, OutputStream outputStream) throws IOException;
+    }
 }

@@ -12,7 +12,6 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
 import org.hivevm.doc.fo.pdf.PdfRenderer;
-import org.hivevm.doc.md.MarkdownRequestHandler;
 import org.hivevm.doc.template.Template;
 import org.hivevm.util.ReplacerRequestHandler;
 import org.hivevm.util.lambda.RequestStreamBuilder;
@@ -74,7 +73,6 @@ public abstract class PdfTask extends DefaultTask {
             Template template = Template.parse(templatePath, workingDir);
 
             RequestStreamBuilder builder = new RequestStreamBuilder();
-            builder.append(new MarkdownRequestHandler());
             builder.append(new ReplacerRequestHandler(props));
             builder.append(new PdfRenderer(template));
             RequestStreamHandler mdHandler = builder.build();

@@ -3,18 +3,11 @@
 
 package org.hivevm.document;
 
-import guru.nidi.graphviz.engine.Format;
-import guru.nidi.graphviz.engine.Graphviz;
-import guru.nidi.graphviz.engine.GraphvizV8Engine;
-import guru.nidi.graphviz.parse.Parser;
-import net.sourceforge.plantuml.FileFormat;
-import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.SourceStringReader;
-import org.hivevm.railroad.RailroadHandler;
+import org.hivevm.util.text2svg.GraphvizRenderer;
+import org.hivevm.util.text2svg.RailroadRenderer;
+import org.hivevm.util.text2svg.TextMateRenderer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Stream;
@@ -91,28 +84,10 @@ public class CodeBlock implements DocumentElement {
         public DocumentElement build() {
             var lang = language != null ? language : "";
             return switch (lang) {
-                case "jsongraph" -> {
-                    Graphviz.useEngine(new GraphvizV8Engine());
-
-                    var uml = "@start" + "json" + "\n!pragma layout smetana\n" + code + "\n@end\" + type + \"\n";
-                    var reader = new SourceStringReader(uml);
-                    try (var ostream = new ByteArrayOutputStream()) {
-                        reader.outputImage(ostream, new FileFormatOption(FileFormat.SVG));
-                        var bytes = ostream.toByteArray();
-                        var base64 = Base64.getEncoder().encodeToString(bytes);
-                        yield new Image(id, "data:image/svg+xml;base64," + base64);
-                    } catch (IOException e) {
-                    }
-                    yield new CodeBlock(this);
-                }
-                case "uml", "ebnf", "regex" -> {
-                    Graphviz.useEngine(new GraphvizV8Engine());
-
-                    var uml = "@start" + language + "\n!pragma layout smetana\n" + code + "\n@end\" + type + \"\n";
-                    var reader = new SourceStringReader(uml);
-                    try (var ostream = new ByteArrayOutputStream()) {
-                        reader.outputImage(ostream, new FileFormatOption(FileFormat.SVG));
-                        var bytes = ostream.toByteArray();
+                case "uml", "ebnf", "regex", "jsongraph" -> {
+                    try {
+                        var type = "jsongraph".equalsIgnoreCase(lang) ? "json" : lang;
+                        var bytes = GraphvizRenderer.render(code, type);
                         var base64 = Base64.getEncoder().encodeToString(bytes);
                         yield new Image(id, "data:image/svg+xml;base64," + base64);
                     } catch (IOException e) {
@@ -120,13 +95,8 @@ public class CodeBlock implements DocumentElement {
                     yield new CodeBlock(this);
                 }
                 case "dot" -> {
-                    try (var ostream = new ByteArrayOutputStream()) {
-                        var graph = new Parser().read(code);
-                        Graphviz.fromGraph(graph)
-                                .render(Format.SVG_STANDALONE)
-                                .toOutputStream(ostream);
-
-                        var bytes = ostream.toByteArray();
+                    try {
+                        var bytes = GraphvizRenderer.render(code);
                         var base64 = Base64.getEncoder().encodeToString(bytes);
                         yield new Image(id, "data:image/svg+xml;base64," + base64);
                     } catch (IOException e) {
@@ -134,11 +104,8 @@ public class CodeBlock implements DocumentElement {
                     yield new CodeBlock(this);
                 }
                 case "railroad" -> {
-                    try (var ostream = new ByteArrayOutputStream()) {
-                        var svg = RailroadHandler.BNF_TO_SVG.handleRequest(code, null);
-                        ostream.write(svg.getBytes());
-
-                        var bytes = ostream.toByteArray();
+                    try {
+                        var bytes = RailroadRenderer.render(code);
                         var base64 = Base64.getEncoder().encodeToString(bytes);
                         yield new Image(id, "data:image/svg+xml;base64," + base64);
                     } catch (IOException e) {
@@ -148,8 +115,7 @@ public class CodeBlock implements DocumentElement {
                 }
                 case "ini", "yaml", "xml", "json", "java", "cpp", "rust" -> {
                     try {
-                        var rows = new ArrayList<Line>();
-                        TextMateGenerator.generate(lang, code, rows);
+                        var rows = TextMateRenderer.render(code, lang);
                         yield new CodeBlock(this, rows);
                     } catch (Exception e) {
                         e.printStackTrace();
