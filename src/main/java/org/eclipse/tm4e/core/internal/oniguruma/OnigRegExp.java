@@ -21,11 +21,12 @@ package org.eclipse.tm4e.core.internal.oniguruma;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.regex.Pattern;
 
+import org.eclipse.tm4e.core.TMException;
 import org.gradle.internal.impldep.com.google.api.client.util.Objects;
 import org.jspecify.annotations.Nullable;
-import org.eclipse.tm4e.core.TMException;
 import org.eclipse.tm4e.core.internal.utils.StringUtils;
 import org.jcodings.specific.NonStrictUTF8Encoding;
 import org.joni.Matcher;
@@ -79,8 +80,6 @@ public final class OnigRegExp {
 
 	private Regex parsePattern(final String pattern) throws SyntaxException {
 		int options = Option.CAPTURE_GROUP;
-//		if (ignoreCase)
-//			options |= Option.IGNORECASE;
 		final byte[] patternBytes = pattern.getBytes(StandardCharsets.UTF_8);
 		return new Regex(patternBytes, 0, patternBytes.length, options, NonStrictUTF8Encoding.INSTANCE, Syntax.RUBY,
 				LOGGER.isLoggable(Level.WARNING) ? LOGGER_WARN_CALLBACK : WarnCallback.NONE);
@@ -257,10 +256,12 @@ public final class OnigRegExp {
         var data = content.getBytes(StandardCharsets.UTF_8);
         var text = content.substring(startPosition);
         var m = re.matcher(text);
-        m.find();
+        var found = m.find();
 
 		var matcher = regex.matcher(data);
 		var status = matcher.search(startPosition, data.length, Option.DEFAULT) != Matcher.FAILED;
+        if (found != status)
+            System.out.println("found != status");
 
 		return status
                 ? new OnigResult(m, matcher.getEagerRegion())

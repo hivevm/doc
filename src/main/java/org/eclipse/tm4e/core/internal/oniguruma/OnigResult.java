@@ -55,6 +55,8 @@ public final class OnigResult {
     public int locationAt(int index) {
         var bytes = Math.max(region.getBeg(index), 0);
         var chars = Math.max(matcher.start(index), 0);
+        var count = matcher.groupCount();
+        var text = matcher.group(index);
         return bytes;
     }
 
